@@ -50,4 +50,5 @@ int main() {
         link(a,b,c);
     }
     solve();
+    return 0;
 }
