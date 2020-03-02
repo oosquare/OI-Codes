@@ -1,10 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <int MaxSize>
-class FHQTreap
-{
-public:
+template <int MaxSize> class FHQTreap {
+  public:
     int insert(int key) {
         int x, y;
         valueSplit(Root, key - 1, x, y);
@@ -18,16 +16,14 @@ public:
         Root = merge(merge(x, create(key)), y);
         return min(abs(key - sizePrev(pos + 1)), abs(sizeNext(pos + 1) - key));
     }
-private:
-    struct Node
-    {
+
+  private:
+    struct Node {
         int Key, Left, Right, Size, Priority;
     } Tree[MaxSize];
     int Total, Seed = 233, Root;
 
-    int random() { 
-        return Seed = (Seed * 141821ll % 0x7fffffff); 
-    }
+    int random() { return Seed = (Seed * 141821ll % 0x7fffffff); }
 
     int create(int key) {
         int root = ++Total;
@@ -40,7 +36,8 @@ private:
 
     void pushup(int root) {
         if (root != 0)
-            Tree[root].Size = Tree[Tree[root].Left].Size + Tree[Tree[root].Right].Size + 1;
+            Tree[root].Size =
+                Tree[Tree[root].Left].Size + Tree[Tree[root].Right].Size + 1;
     }
 
     void valueSplit(int root, int key, int &x, int &y) {
@@ -66,7 +63,8 @@ private:
         }
         if (Tree[Tree[root].Left].Size + 1 <= sze) {
             x = root;
-            splitSize(Tree[x].Right, sze - Tree[Tree[x].Left].Size - 1, Tree[x].Right, y);
+            splitSize(Tree[x].Right, sze - Tree[Tree[x].Left].Size - 1,
+                      Tree[x].Right, y);
             pushup(x);
         } else {
             y = root;
@@ -77,7 +75,7 @@ private:
 
     int merge(int x, int y) {
         if (x == 0 || y == 0)
-            return  x + y;
+            return x + y;
         if (Tree[x].Priority < Tree[y].Priority) {
             Tree[x].Right = merge(Tree[x].Right, y);
             pushup(x);
@@ -95,7 +93,7 @@ private:
         int root = x;
         if (x == 0)
             return -0x3f3f3f3f;
-        while (Tree[root].Right) 
+        while (Tree[root].Right)
             root = Tree[root].Right;
         ans = Tree[root].Key;
         Root = merge(x, y);
@@ -121,7 +119,7 @@ private:
         int root = x;
         if (x == 0)
             return -0x3f3f3f3f;
-        while (Tree[root].Right) 
+        while (Tree[root].Right)
             root = Tree[root].Right;
         ans = Tree[root].Key;
         Root = merge(x, y);
@@ -158,7 +156,7 @@ int main() {
     for (int i = 1; i <= m; ++i) {
         scanf("%s", cmd);
         if (cmd[0] == 'I') {
-            scanf("%d%d", &p, &x);    
+            scanf("%d%d", &p, &x);
             ans1 = min(ans1, tree1.insertAt(x, p));
             ans2 = min(ans2, tree2.insert(x));
         } else if (cmd[4] == 'G') {

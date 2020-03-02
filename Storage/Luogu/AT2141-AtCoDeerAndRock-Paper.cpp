@@ -1,27 +1,27 @@
-#include <iostream>
 #include <cstring>
+#include <iostream>
 using namespace std;
 char s[1000101];
-int n,x,y,ans;
-int main(){
-    cin>>s;
-    n=strlen(s);
-    for(int i=0;i<n;i++){
-        if(s[i]=='p'){
-            if(x>y){
+int n, x, y, ans;
+int main() {
+    cin >> s;
+    n = strlen(s);
+    for (int i = 0; i < n; i++) {
+        if (s[i] == 'p') {
+            if (x > y) {
                 y++;
-            }else{
+            } else {
                 x++;
                 ans--;
             }
-        }else{
-            if(x>y){
+        } else {
+            if (x > y) {
                 y++;
                 ans++;
-            }else{
+            } else {
                 x++;
             }
         }
     }
-    cout<<ans;
+    cout << ans;
 }

@@ -33,13 +33,15 @@ int main() {
         scanf("%d", &C[i]);
         sum[i] = sum[i - 1] + C[i];
     }
-    for (int i = 1; i <= n; ++i) l[i] = n + 1;
+    for (int i = 1; i <= n; ++i)
+        l[i] = n + 1;
     memset(stk, 0x3f, sizeof(stk));
     l[0] = 1;
     stk[++top] = 0;
     for (int i = 1; i <= n; ++i) {
         f[i] = calculate(stk[search(i)], i);
-        while (top != 0 && i < l[stk[top]] && calculate(i, l[stk[top]]) < calculate(stk[top], l[stk[top]])) {
+        while (top != 0 && i < l[stk[top]] &&
+               calculate(i, l[stk[top]]) < calculate(stk[top], l[stk[top]])) {
             --top;
         }
         if (top == 0) {

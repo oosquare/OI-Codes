@@ -1,80 +1,102 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <int MaxN>
-class SuffixArray
-{
-public:
-	inline void init(char str[]) {
-		Len=strlen(str+1);
-		for(int i=1;i<=Len;++i) Data[i]=str[i];
-	}
+template <int MaxN> class SuffixArray {
+  public:
+    inline void init(char str[]) {
+        Len = strlen(str + 1);
+        for (int i = 1; i <= Len; ++i)
+            Data[i] = str[i];
+    }
 
-	inline void preprocess(bool sa,bool height) {
-		if(sa) DAPreprocess(Len);
-		if(height) heightPreprocess(Len);
-	}
+    inline void preprocess(bool sa, bool height) {
+        if (sa)
+            DAPreprocess(Len);
+        if (height)
+            heightPreprocess(Len);
+    }
 
-	inline int atRank(int x) { return Rank[Cur][x]; }
+    inline int atRank(int x) { return Rank[Cur][x]; }
 
-	inline int atSA(int x) { return SA[x]; }
+    inline int atSA(int x) { return SA[x]; }
 
-	inline int atHeight(int x) { return Height[x]; }
+    inline int atHeight(int x) { return Height[x]; }
 
-public:
-	int SA[MaxN],Rank[2][MaxN],Height[MaxN],TmpSort[MaxN],Data[MaxN],Cur,Len;
+  public:
+    int SA[MaxN], Rank[2][MaxN], Height[MaxN], TmpSort[MaxN], Data[MaxN], Cur,
+        Len;
 
-	void sort(int n,int m) {
-		for(int i=0;i<=m;++i) TmpSort[i]=0;
-		for(int i=1;i<=n;++i) ++TmpSort[Rank[Cur][Rank[Cur^1][i]]];
-		for(int i=1;i<=m;++i) TmpSort[i]+=TmpSort[i-1];
-		for(int i=n;i>=1;i--) SA[TmpSort[Rank[Cur][Rank[Cur^1][i]]]--]=Rank[Cur^1][i];
-	}
+    void sort(int n, int m) {
+        for (int i = 0; i <= m; ++i)
+            TmpSort[i] = 0;
+        for (int i = 1; i <= n; ++i)
+            ++TmpSort[Rank[Cur][Rank[Cur ^ 1][i]]];
+        for (int i = 1; i <= m; ++i)
+            TmpSort[i] += TmpSort[i - 1];
+        for (int i = n; i >= 1; i--)
+            SA[TmpSort[Rank[Cur][Rank[Cur ^ 1][i]]]--] = Rank[Cur ^ 1][i];
+    }
 
-	inline bool equal(int f[],int x,int y,int l) { return f[x]==f[y]&&f[x+l]==f[y+l]; }
+    inline bool equal(int f[], int x, int y, int l) {
+        return f[x] == f[y] && f[x + l] == f[y + l];
+    }
 
-	void DAPreprocess(int n) {
-		int m;
-		for(int i=1;i<=n;++i) { Rank[Cur][i]=Data[i]; Rank[Cur^1][i]=i; }
-		m=127; sort(n,m);
-		for(int w=1,p=1,i;p<n;w*=2,m=p) {
-			for(p=0,i=n-w+1;i<=n;++i) Rank[Cur^1][++p]=i;
-			for(i=1;i<=n;++i) if(SA[i]>w) Rank[Cur^1][++p]=SA[i]-w;
-			sort(n,m); Cur^=1; Rank[Cur][SA[1]]=p=1;
-			for(i=2;i<=n;++i) Rank[Cur][SA[i]]=equal(Rank[Cur^1],SA[i],SA[i-1],w)?p:++p;
-		}
-	}
+    void DAPreprocess(int n) {
+        int m;
+        for (int i = 1; i <= n; ++i) {
+            Rank[Cur][i] = Data[i];
+            Rank[Cur ^ 1][i] = i;
+        }
+        m = 127;
+        sort(n, m);
+        for (int w = 1, p = 1, i; p < n; w *= 2, m = p) {
+            for (p = 0, i = n - w + 1; i <= n; ++i)
+                Rank[Cur ^ 1][++p] = i;
+            for (i = 1; i <= n; ++i)
+                if (SA[i] > w)
+                    Rank[Cur ^ 1][++p] = SA[i] - w;
+            sort(n, m);
+            Cur ^= 1;
+            Rank[Cur][SA[1]] = p = 1;
+            for (i = 2; i <= n; ++i)
+                Rank[Cur][SA[i]] =
+                    equal(Rank[Cur ^ 1], SA[i], SA[i - 1], w) ? p : ++p;
+        }
+    }
 
-	void heightPreprocess(int n) {
-		int j,k=0;
-		for(int i=1;i<=n;Height[Rank[Cur][i++]]=k)
-			for(k=k?k-1:k,j=SA[Rank[Cur][i]-1];Data[i+k]==Data[j+k];++k)
-				;
-	}
+    void heightPreprocess(int n) {
+        int j, k = 0;
+        for (int i = 1; i <= n; Height[Rank[Cur][i++]] = k)
+            for (k = k ? k - 1 : k, j = SA[Rank[Cur][i] - 1];
+                 Data[i + k] == Data[j + k]; ++k)
+                ;
+    }
 };
 
-int stk[500005],top,l[500005];
+int stk[500005], top, l[500005];
 char str[500005];
 SuffixArray<500005> sa;
 long long ans;
 
 int main() {
-	scanf("%s",str+1);
-	sa.init(str);
-	int n=sa.Len;
-	ans=1ll*n*(n-1)*(n+1)/2;
-	sa.preprocess(true,true);
-	for(int i=1;i<=n;++i) {
-		while(sa.atHeight(stk[top])>sa.atHeight(i)) --top;
-		l[i]=i-stk[top];
-		stk[++top]=i;
-	}
-	stk[++top]=1+n;
-	sa.Height[n+1]=-1;
-	for(int i=n;i>=1;--i) {
-		while(sa.atHeight(stk[top])>=sa.atHeight(i)) --top;
-		ans-=2ll*sa.atHeight(i)*l[i]*(stk[top]-i);
-		stk[++top]=i;
-	}
-	printf("%lld\n",ans);
+    scanf("%s", str + 1);
+    sa.init(str);
+    int n = sa.Len;
+    ans = 1ll * n * (n - 1) * (n + 1) / 2;
+    sa.preprocess(true, true);
+    for (int i = 1; i <= n; ++i) {
+        while (sa.atHeight(stk[top]) > sa.atHeight(i))
+            --top;
+        l[i] = i - stk[top];
+        stk[++top] = i;
+    }
+    stk[++top] = 1 + n;
+    sa.Height[n + 1] = -1;
+    for (int i = n; i >= 1; --i) {
+        while (sa.atHeight(stk[top]) >= sa.atHeight(i))
+            --top;
+        ans -= 2ll * sa.atHeight(i) * l[i] * (stk[top] - i);
+        stk[++top] = i;
+    }
+    printf("%lld\n", ans);
 }

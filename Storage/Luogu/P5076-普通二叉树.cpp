@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
-class FHQTreap {
-public:
+template <typename T> class FHQTreap {
+  public:
     FHQTreap() { Root = nullptr; }
 
     void insert(T key) {
@@ -56,7 +55,8 @@ public:
         root = x;
         if (root == nullptr)
             return -0x7fffffff;
-        while (root->Right) root = root->Right;
+        while (root->Right)
+            root = root->Right;
         ans = root->Key;
         Root = merge(x, y);
         return ans;
@@ -69,7 +69,8 @@ public:
         root = y;
         if (root == nullptr)
             return 0x7fffffff;
-        while (root->Left) root = root->Left;
+        while (root->Left)
+            root = root->Left;
         ans = root->Key;
         Root = merge(x, y);
         return ans;
@@ -90,7 +91,7 @@ public:
         return ans;
     }
 
-private:
+  private:
     struct Node {
         T Key;
         Node *Left, *Right;
@@ -111,7 +112,8 @@ private:
 
     void pushup(Node *root) {
         if (root)
-            root->Size = (root->Left ? root->Left->Size : 0) + (root->Right ? root->Right->Size : 0) + 1;
+            root->Size = (root->Left ? root->Left->Size : 0) +
+                         (root->Right ? root->Right->Size : 0) + 1;
     }
 
     void split(Node *root, T key, Node *&x, Node *&y) {

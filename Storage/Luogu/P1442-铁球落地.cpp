@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
-void read(T &number) {
-    number = 0; int symbol = 1;
+template <typename T> void read(T &number) {
+    number = 0;
+    int symbol = 1;
     char c = getchar();
     while (!isdigit(c)) {
-        if (c == '-') symbol *= -1;
+        if (c == '-')
+            symbol *= -1;
         c = getchar();
     }
     while (isdigit(c)) {
@@ -16,26 +17,27 @@ void read(T &number) {
     number *= symbol;
 }
 
-template <typename T, int MaxSize>
-class SegmentTree 
-{
-public:
+template <typename T, int MaxSize> class SegmentTree {
+  public:
     void init(int n) { Size = n; }
 
     void build(T arr[]) { build(1, 1, Size, arr); }
 
-    void modify(int left, int right, T key) { modify(1, 1, Size, left, right, key); }
+    void modify(int left, int right, T key) {
+        modify(1, 1, Size, left, right, key);
+    }
 
     T query(int left, int right) { return query(1, 1, Size, left, right); }
 
-private:
-    struct Node 
-    {
+  private:
+    struct Node {
         T Add, Sum;
     } Tree[MaxSize];
     int Size;
 
-    void pushup(int root) { Tree[root].Sum = Tree[root << 1].Sum + Tree[root << 1 | 1].Sum; }
+    void pushup(int root) {
+        Tree[root].Sum = Tree[root << 1].Sum + Tree[root << 1 | 1].Sum;
+    }
 
     void update(int root, int left, int right, T key) {
         Tree[root].Add = key;
@@ -90,12 +92,9 @@ private:
     }
 };
 
-struct Platform
-{
+struct Platform {
     int Height, Left, Right;
-    bool operator<(const Platform& rhs) {
-        return Height < rhs.Height;
-    }
+    bool operator<(const Platform &rhs) { return Height < rhs.Height; }
 };
 
 const int maxn = 1000000 + 10;
@@ -113,11 +112,15 @@ int main(int argc, char *argv[]) {
     clock_t stime = clock();
 #endif
     // [ Codes ] ////////////////////////
-    
-    read(n); read(maxHeight);
-    read(startX); read(startY);
+
+    read(n);
+    read(maxHeight);
+    read(startX);
+    read(startY);
     for (int i = 1; i <= n; ++i) {
-        read(pl[i].Height); read(pl[i].Left); read(pl[i].Right);
+        read(pl[i].Height);
+        read(pl[i].Left);
+        read(pl[i].Right);
         maxRight = max(maxRight, pl[i].Right);
     }
 
@@ -125,9 +128,11 @@ int main(int argc, char *argv[]) {
     tree.init(maxRight);
     for (int i = 1; i <= n; ++i) {
         nxt[i][0] = tree.query(pl[i].Left, pl[i].Left);
-        if (pl[i].Height - pl[nxt[i][0]].Height > maxHeight) nxt[i][0] = n + 1;
+        if (pl[i].Height - pl[nxt[i][0]].Height > maxHeight)
+            nxt[i][0] = n + 1;
         nxt[i][1] = tree.query(pl[i].Right, pl[i].Right);
-        if (pl[i].Height - pl[nxt[i][1]].Height > maxHeight) nxt[i][1] = n + 1;
+        if (pl[i].Height - pl[nxt[i][1]].Height > maxHeight)
+            nxt[i][1] = n + 1;
         tree.modify(pl[i].Left, pl[i].Right, i);
     }
     nxtForAns = tree.query(startX, startX);
@@ -138,17 +143,21 @@ int main(int argc, char *argv[]) {
         if (j == 0)
             f[i][0] = min(f[j][0] + pl[i].Height, f[j][1] + pl[i].Height);
         else
-            f[i][0] = min(f[j][0] + pl[i].Left - pl[j].Left + pl[i].Height - pl[j].Height,
-                          f[j][1] + pl[j].Right - pl[i].Left + pl[i].Height - pl[j].Height);
+            f[i][0] = min(f[j][0] + pl[i].Left - pl[j].Left + pl[i].Height -
+                              pl[j].Height,
+                          f[j][1] + pl[j].Right - pl[i].Left + pl[i].Height -
+                              pl[j].Height);
         if (k == 0)
             f[i][1] = min(f[k][0] + pl[i].Height, f[k][1] + pl[i].Height);
         else
-            f[i][1] = min(f[k][0] + pl[i].Right - pl[k].Left + pl[i].Height - pl[k].Height,
-                          f[k][1] + pl[k].Right - pl[i].Right + pl[i].Height - pl[k].Height);
+            f[i][1] = min(f[k][0] + pl[i].Right - pl[k].Left + pl[i].Height -
+                              pl[k].Height,
+                          f[k][1] + pl[k].Right - pl[i].Right + pl[i].Height -
+                              pl[k].Height);
     }
 
     ans = startY - pl[nxtForAns].Height;
-    ans += min(f[nxtForAns][0] + startX - pl[nxtForAns].Left, 
+    ans += min(f[nxtForAns][0] + startX - pl[nxtForAns].Left,
                f[nxtForAns][1] + pl[nxtForAns].Right - startX);
     printf("%d\n", ans);
 

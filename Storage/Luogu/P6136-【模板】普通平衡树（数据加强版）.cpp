@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
-class FHQTreap {
-public:
+template <typename T> class FHQTreap {
+  public:
     FHQTreap() { Root = nullptr; }
 
     ~FHQTreap() {
@@ -61,7 +60,8 @@ public:
         root = x;
         if (root == nullptr)
             return -0x7fffffff;
-        while (root->Right) root = root->Right;
+        while (root->Right)
+            root = root->Right;
         ans = root->Key;
         Root = merge(x, y);
         return ans;
@@ -74,7 +74,8 @@ public:
         root = y;
         if (root == nullptr)
             return 0x7fffffff;
-        while (root->Left) root = root->Left;
+        while (root->Left)
+            root = root->Left;
         ans = root->Key;
         Root = merge(x, y);
         return ans;
@@ -95,7 +96,7 @@ public:
         return ans;
     }
 
-private:
+  private:
     struct Node {
         T Key;
         Node *Left, *Right;
@@ -116,7 +117,8 @@ private:
 
     void pushup(Node *root) {
         if (root)
-            root->Size = (root->Left ? root->Left->Size : 0) + (root->Right ? root->Right->Size : 0) + 1;
+            root->Size = (root->Left ? root->Left->Size : 0) +
+                         (root->Right ? root->Right->Size : 0) + 1;
     }
 
     void split(Node *root, T key, Node *&x, Node *&y) {
@@ -152,19 +154,28 @@ private:
 };
 
 namespace IO {
-    static char buf[1<<20], *fs, *ft;
-    inline char gc() {
-        return fs == ft ? ((ft = (fs = buf) + fread(buf, 1, 1 << 20, stdin)), (fs == ft ? EOF : *fs++)) : *fs++;
-    }
-
-    template <typename T>
-	inline T read() {
-		T x = 0, f = 1; char s = gc();
-		while (s < '0'|| s > '9') { if (s == '-') f = -1; s = gc(); }
-		while (s >= '0'&& s<= '9') { x = (x << 1) + (x << 3) + (s ^ 48); s = gc(); }
-		return x * f;
-	}
+static char buf[1 << 20], *fs, *ft;
+inline char gc() {
+    return fs == ft ? ((ft = (fs = buf) + fread(buf, 1, 1 << 20, stdin)),
+                       (fs == ft ? EOF : *fs++))
+                    : *fs++;
 }
+
+template <typename T> inline T read() {
+    T x = 0, f = 1;
+    char s = gc();
+    while (s < '0' || s > '9') {
+        if (s == '-')
+            f = -1;
+        s = gc();
+    }
+    while (s >= '0' && s <= '9') {
+        x = (x << 1) + (x << 3) + (s ^ 48);
+        s = gc();
+    }
+    return x * f;
+}
+} // namespace IO
 
 FHQTreap<int> tree;
 int n, m, x, opt, last, ans;
@@ -175,12 +186,15 @@ int main() {
     freopen("project.out", "w", stdout);
 #endif
     using namespace IO;
-    n = read<int>(); m = read<int>();
+    n = read<int>();
+    m = read<int>();
     for (int i = 1; i <= n; ++i) {
-        x = read<int>(); tree.insert(x);
+        x = read<int>();
+        tree.insert(x);
     }
     for (int i = 1; i <= m; ++i) {
-        opt = read<int>(); x = read<int>() ^ last;
+        opt = read<int>();
+        x = read<int>() ^ last;
         if (opt == 1)
             tree.insert(x);
         if (opt == 2)

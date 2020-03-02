@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T, int MaxN>
-class Treap {
-public:
+template <typename T, int MaxN> class Treap {
+  public:
     Treap() { Seed = (int)(MaxN * 565463ll % 2147483647); }
 
     void insert(T key) {
@@ -49,7 +48,8 @@ public:
         T ans;
         split(Root, key - 1, x, y);
         root = x;
-        while (Tree[root].Right) root = Tree[root].Right;
+        while (Tree[root].Right)
+            root = Tree[root].Right;
         ans = Tree[root].Key;
         Root = merge(x, y);
         return ans;
@@ -60,13 +60,14 @@ public:
         T ans;
         split(Root, key, x, y);
         root = y;
-        while (Tree[root].Left) root = Tree[root].Left;
+        while (Tree[root].Left)
+            root = Tree[root].Left;
         ans = Tree[root].Key;
         Root = merge(x, y);
         return ans;
     }
 
-private:
+  private:
     struct Node {
         T Key;
         int Left, Right, Size, Priority;
@@ -84,7 +85,10 @@ private:
         return root;
     }
 
-    void pushup(int root) { Tree[root].Size = Tree[Tree[root].Left].Size + Tree[Tree[root].Right].Size + 1; }
+    void pushup(int root) {
+        Tree[root].Size =
+            Tree[Tree[root].Left].Size + Tree[Tree[root].Right].Size + 1;
+    }
 
     void split(int root, int key, int &x, int &y) {
         if (root == 0) {

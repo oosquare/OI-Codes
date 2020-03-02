@@ -7,16 +7,16 @@
  * };
  */
 class Solution {
-public:
-    vector<int> printListReversingly(ListNode* head) {
+  public:
+    vector<int> printListReversingly(ListNode *head) {
         dfs(head);
         return tmp;
     }
     vector<int> tmp;
-    void dfs(ListNode* p){
-        if(p==NULL) return;
+    void dfs(ListNode *p) {
+        if (p == NULL)
+            return;
         dfs(p->next);
         tmp.push_back(p->val);
     }
-
 };

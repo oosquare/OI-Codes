@@ -3,8 +3,7 @@
 #define TIME_LIMIT 1000
 using namespace std;
 
-template <typename T>
-void read(T &number) {
+template <typename T> void read(T &number) {
     number = 0;
     int symbol = 1;
     char c = getchar();
@@ -26,7 +25,8 @@ void read(T &number) {
 const int maxn = 4000001;
 
 int tree[maxn], tag[maxn];
-int rev[maxn], dep[maxn], sze[maxn], dfn[maxn], top[maxn], son[maxn], father[maxn];
+int rev[maxn], dep[maxn], sze[maxn], dfn[maxn], top[maxn], son[maxn],
+    father[maxn];
 int n, m, root, x, y, z, a[maxn], war1[maxn], war2[maxn], tot;
 int cnt, from[maxn], to[maxn], Next[maxn], head[maxn];
 char opt;

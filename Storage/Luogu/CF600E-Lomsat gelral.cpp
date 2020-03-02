@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
-void read(T &number) {
-    number = 0; int symbol = 1;
+template <typename T> void read(T &number) {
+    number = 0;
+    int symbol = 1;
     char c = getchar();
     while (!isdigit(c)) {
-        if (c == '-') symbol *= -1;
+        if (c == '-')
+            symbol *= -1;
         c = getchar();
     }
     while (isdigit(c)) {
@@ -16,13 +17,11 @@ void read(T &number) {
     number *= symbol;
 }
 
-struct Edge
-{
+struct Edge {
     int To, Next;
 };
 
-struct Node 
-{
+struct Node {
     int Left, Right;
     long long Sum, Ans;
 };
@@ -30,7 +29,8 @@ struct Node
 const int maxn = 2e6 + 10;
 
 Node segtree[5000050];
-Edge tree[maxn << 1]; int head[maxn];
+Edge tree[maxn << 1];
+int head[maxn];
 int n, total, segtotal;
 int root[maxn], color[maxn];
 long long ans[maxn];
@@ -44,7 +44,8 @@ inline void pushup(int x) {
         segtree[x].Ans = segtree[segtree[x].Right].Ans;
     } else {
         segtree[x].Sum = segtree[segtree[x].Left].Sum;
-        segtree[x].Ans = segtree[segtree[x].Left].Ans + segtree[segtree[x].Right].Ans;
+        segtree[x].Ans =
+            segtree[segtree[x].Left].Ans + segtree[segtree[x].Right].Ans;
     }
 }
 
@@ -57,8 +58,8 @@ void modify(int &x, int l, int r, int p, int v) {
         return;
     }
     int mid = (l + r) >> 1;
-    if (p <= mid) 
-        modify(segtree[x].Left, l, mid, p, v);    
+    if (p <= mid)
+        modify(segtree[x].Left, l, mid, p, v);
     else
         modify(segtree[x].Right, mid + 1, r, p, v);
     pushup(x);
@@ -80,8 +81,10 @@ int merge(int x, int y, int l, int r) {
 }
 
 void link(int x, int y) {
-    tree[++total] = (Edge){y, head[x]}; head[x] = total;
-    tree[++total] = (Edge){x, head[y]}; head[y] = total;
+    tree[++total] = (Edge){y, head[x]};
+    head[x] = total;
+    tree[++total] = (Edge){x, head[y]};
+    head[y] = total;
 }
 
 void DFS(int x, int fa) {
@@ -102,7 +105,7 @@ int main(int argc, char *argv[]) {
     clock_t stime = clock();
 #endif
     // [ Codes ] ////////////////////////
-    
+
     read(n);
     for (int i = 1; i <= n; ++i) {
         read(color[i]);
@@ -110,12 +113,13 @@ int main(int argc, char *argv[]) {
     }
     for (int i = 1; i < n; ++i) {
         int x, y;
-        read(x); read(y);
+        read(x);
+        read(y);
         link(x, y);
     }
 
     DFS(1, 0);
-    for(int i = 1; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         printf("%lld ", ans[i]);
     }
     printf("\n");
@@ -123,8 +127,7 @@ int main(int argc, char *argv[]) {
     // [ Codes ] ////////////////////////
 #ifndef ONLINE_JUDGE
     clock_t etime = clock();
-    printf("\n-----------------\n")
-    printf("Time : %dms\n", etime - stime);
+    printf("\n-----------------\n") printf("Time : %dms\n", etime - stime);
     if (etime - stime >= 1000)
         printf("<<< Warning >>> Time Limited Exceeded\n");
 #endif

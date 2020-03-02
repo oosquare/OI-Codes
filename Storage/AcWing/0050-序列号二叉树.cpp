@@ -8,39 +8,39 @@
  * };
  */
 class Solution {
-public:
-    void si(TreeNode* root, string& os) {
-        if(root==nullptr){
+  public:
+    void si(TreeNode *root, string &os) {
+        if (root == nullptr) {
             os += "null ";
             return;
         }
-        os =os+ to_string(root->val)+" ";
-        si(root->left,os);
-        si(root->right,os);
+        os = os + to_string(root->val) + " ";
+        si(root->left, os);
+        si(root->right, os);
     }
     // Encodes a tree to a single string.
-    string serialize(TreeNode* root) {
+    string serialize(TreeNode *root) {
         string os;
-        si(root,os);
+        si(root, os);
         return os;
     }
-    
-    TreeNode* di(istringstream &is){
+
+    TreeNode *di(istringstream &is) {
         string s;
         is >> s;
-        if(s=="null"){
+        if (s == "null") {
             return nullptr;
         }
-        TreeNode* nd=new TreeNode(atoi(s.c_str()));
-        nd->left=di(is);
-        nd->right=di(is);
+        TreeNode *nd = new TreeNode(atoi(s.c_str()));
+        nd->left = di(is);
+        nd->right = di(is);
         return nd;
     }
     // Decodes your encoded data to tree.
-    TreeNode* deserialize(string data) {
-        TreeNode* rt=nullptr;
+    TreeNode *deserialize(string data) {
+        TreeNode *rt = nullptr;
         istringstream is(data);
-        rt=di(is);
+        rt = di(is);
         return rt;
     }
 };

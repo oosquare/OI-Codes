@@ -6,7 +6,7 @@ const int maxn = 100000;
 int minn, n, ans;
 
 class FHQTreap {
-public:
+  public:
     void insert(int key) {
         if (key < minn)
             return;
@@ -42,7 +42,7 @@ public:
         return Tree[root].Key;
     }
 
-private:
+  private:
     struct Node {
         int Key, Left, Right, Size, Priority;
     } Tree[maxn];
@@ -59,7 +59,10 @@ private:
         return root;
     }
 
-    void pushup(int root) { Tree[root].Size = Tree[Tree[root].Left].Size + Tree[Tree[root].Right].Size + 1; }
+    void pushup(int root) {
+        Tree[root].Size =
+            Tree[Tree[root].Left].Size + Tree[Tree[root].Right].Size + 1;
+    }
 
     void split(int root, int key, int &x, int &y) {
         if (root == 0) {

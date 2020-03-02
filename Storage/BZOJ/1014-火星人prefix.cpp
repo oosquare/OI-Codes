@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef unsigned  ull;
+typedef unsigned ull;
 
 struct node {
     char key;
@@ -22,23 +22,34 @@ int stk[maxn];
 #define ls(x) (tree[(x)].l)
 #define rs(x) (tree[(x)].r)
 #define myrandom() (seed = (seed * 413273), seed)
-#define create(key) \
-    ((tree[++uuid] = {(char)(key - 'a' + 1), (ull)(key - 'a' + 1), 0, 0, 1, myrandom() }), uuid)
+#define create(key)                                                            \
+    ((tree[++uuid] = {(char)(key - 'a' + 1), (ull)(key - 'a' + 1), 0, 0, 1,    \
+                      myrandom()}),                                            \
+     uuid)
 
 namespace IO {
-    static char buf[1 << 20], *fs, *ft;
-    inline char gc() {
-        return fs == ft ? ((ft = (fs = buf) + fread(buf, 1, 1 << 20, stdin)), (fs == ft ? EOF : *fs++)) : *fs++;
-    }
-
-    template <typename T>
-	inline T read() {
-		T x = 0, f = 1; char s = gc();
-		while (s < '0'|| s > '9') { if (s == '-') f = -1; s = gc(); }
-		while (s >= '0'&& s<= '9') { x = (x << 1) + (x << 3) + (s ^ 48); s = gc(); }
-		return x * f;
-	}
+static char buf[1 << 20], *fs, *ft;
+inline char gc() {
+    return fs == ft ? ((ft = (fs = buf) + fread(buf, 1, 1 << 20, stdin)),
+                       (fs == ft ? EOF : *fs++))
+                    : *fs++;
 }
+
+template <typename T> inline T read() {
+    T x = 0, f = 1;
+    char s = gc();
+    while (s < '0' || s > '9') {
+        if (s == '-')
+            f = -1;
+        s = gc();
+    }
+    while (s >= '0' && s <= '9') {
+        x = (x << 1) + (x << 3) + (s ^ 48);
+        s = gc();
+    }
+    return x * f;
+}
+} // namespace IO
 
 inline void pushup(int x) {
     tree[x].size = tree[ls(x)].size + tree[rs(x)].size + 1;
@@ -62,7 +73,8 @@ void split(int root, int sze, int &x, int &y) {
 }
 
 int merge(int x, int y) {
-    if (!x || !y) return x ^ y;
+    if (!x || !y)
+        return x ^ y;
     if (tree[x].priority < tree[y].priority) {
         rs(x) = merge(rs(x), y);
         pushup(x);
@@ -102,13 +114,13 @@ inline void insert() {
     IO::gc();
 }
 
-#define check(x, y, l) \
-    (extract((x), ((x) + (l) - 1)) == extract((y), ((y) + (l) - 1)))
+#define check(x, y, l)                                                         \
+    (extract((x), ((x) + (l)-1)) == extract((y), ((y) + (l)-1)))
 
 inline void query() {
     int n = tree[root].size;
-    int s1 = IO::read<int>(), s2 = IO::read<int>(), l = 1, r = max(n - s1, n - s2) + 1,
-        ans = 0;
+    int s1 = IO::read<int>(), s2 = IO::read<int>(), l = 1,
+        r = max(n - s1, n - s2) + 1, ans = 0;
     while (l <= r) {
         int mid = (l + r) >> 1;
         if (check(s1, s2, mid)) {
@@ -133,11 +145,13 @@ int build() {
             last = stk[p];
             stk[p--] = 0;
         }
-        if (p) rs(stk[p]) = x;
+        if (p)
+            rs(stk[p]) = x;
         ls(x) = last;
         stk[++p] = x;
     }
-    while (p) pushup(stk[p--]);
+    while (p)
+        pushup(stk[p--]);
     return stk[1];
 }
 
@@ -148,21 +162,22 @@ int main() {
 #endif
     seed = 233;
     power[0] = 1;
-    for (int i = 1; i < maxn; ++i) power[i] = power[i - 1] * mod;
+    for (int i = 1; i < maxn; ++i)
+        power[i] = power[i - 1] * mod;
     root = build();
     m = IO::read<int>();
     while (m--) {
         char cc = IO::gc();
         switch (cc) {
-            case 'Q':
-                query();
-                break;
-            case 'I':
-                insert();
-                break;
-            case 'R':
-                replace();
-                break;
+        case 'Q':
+            query();
+            break;
+        case 'I':
+            insert();
+            break;
+        case 'R':
+            replace();
+            break;
         }
     }
     return 0;

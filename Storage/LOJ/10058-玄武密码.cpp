@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
-#include <queue>
 #include <cstring>
+#include <iostream>
+#include <queue>
+#include <string>
 using namespace std;
 
 const int Lim = 1000001;
@@ -18,7 +18,7 @@ inline int transform(char x) {
 }
 
 class ACAutomaton {
-public:
+  public:
     void insert(char s[]) {
         int len = strlen(s + 1), u = 1;
         for (int i = 1; i <= len; i++) {
@@ -85,7 +85,7 @@ public:
         Total = 1;
     }
 
-private:
+  private:
     struct Node {
         bool Matched;
         int Fail;
