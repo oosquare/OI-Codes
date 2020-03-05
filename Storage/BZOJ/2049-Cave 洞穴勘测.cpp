@@ -2,70 +2,64 @@
 using namespace std;
 
 struct node {
-    int key, sum, rev, child[2], father;
+    int rev, child[2], father;
     int &operator[](int x) { return child[x]; }
 };
 
-constexpr int maxn = 1e5 + 5;
+constexpr int maxn = 10000 + 10;
 node tree[maxn];
-int uuid, n, m, opt, x, y;
+int uuid, n, m, stk[maxn];
 
 #define ls(x) (tree[(x)].child[0])
 #define rs(x) (tree[(x)].child[1])
 #define fa(x) (tree[(x)].father)
-#define create(k) ((tree[++uuid] = {k, k, 0, {0, 0}, 0}), uuid)
-#define notroot(x) (ls(fa(x)) == (x) || rs(fa(x)) == (x))
-#define pushup(x)                                                              \
-    (tree[x].sum = tree[ls(x)].sum ^ tree[x].key ^ tree[rs(x)].sum)
+#define which(x) ((x) == rs(fa(x)))
 #define swap(x, y) ((x) ^= (y) ^= (x) ^= (y))
-#define update(x) (swap(ls(x), rs(x)), tree[x].rev ^= 1)
-#define which(x) (x == rs(fa(x)))
+#define update(x) (swap(ls(x), rs(x)), tree[(x)].rev ^= 1)
+#define notroot(x) (ls(fa(x)) == (x) || rs(fa(x)) == (x))
 
 inline void pushdown(int x) {
     if (tree[x].rev) {
+        tree[x].rev = 0;
         if (ls(x))
             update(ls(x));
         if (rs(x))
             update(rs(x));
-        tree[x].rev = 0;
     }
 }
 
-inline void rotate(int x) {
-    int y = fa(x), z = fa(y), k = which(x), w = tree[x][!k];
+void rotate(int x) {
+    int y = fa(x), z = fa(y), k = which(x), w = tree[x][k ^ 1];
     if (notroot(y))
         tree[z][y == rs(z)] = x;
-    tree[x][!k] = y;
+    tree[x][k ^ 1] = y;
     tree[y][k] = w;
     if (w)
         fa(w) = y;
     fa(y) = x;
     fa(x) = z;
-    pushup(y);
 }
 
-inline void splay(int x) {
-    int y = x;
-    stack<int> stk;
-    stk.push(y);
+void splay(int x) {
+    int y = x, top = 1;
+    stk[top] = y;
     while (notroot(y))
-        stk.push(y = fa(y));
-    while (!stk.empty())
-        pushdown(stk.top()), stk.pop();
+        stk[++top] = y = fa(y);
+    while (top) {
+        pushdown(stk[top--]);
+    }
     while (notroot(x)) {
         y = fa(x);
         if (notroot(y))
             which(x) == which(y) ? rotate(y) : rotate(x);
         rotate(x);
     }
-    pushup(x);
 }
 
 inline void access(int x) {
     for (int y = 0; x; x = fa(y = x)) {
         splay(x);
         rs(x) = y;
-        pushup(x);
     }
 }
 
@@ -86,13 +80,6 @@ inline int findroot(int x) {
     return x;
 }
 
-inline int extract(int x, int y) {
-    makeroot(x);
-    access(y);
-    splay(y);
-    return y;
-}
-
 inline void link(int x, int y) {
     makeroot(x);
     if (findroot(y) != x)
@@ -101,11 +88,11 @@ inline void link(int x, int y) {
 
 inline void cut(int x, int y) {
     makeroot(x);
-    if (findroot(y) == x && fa(y) == x && !ls(y)) {
+    if (findroot(y) == x && fa(y) == x && !ls(y))
         fa(y) = rs(x) = 0;
-        pushup(x);
-    }
 }
+
+#define check(x, y) (findroot(x) == findroot(y))
 
 int main() {
 #ifndef ONLINE_JUDGE
@@ -113,26 +100,22 @@ int main() {
     freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d", &n, &m);
-    for (int i = 1; i <= n; ++i) {
-        int x;
-        scanf("%d", &x);
-        create(x);
-    }
     while (m--) {
-        scanf("%d%d%d", &opt, &x, &y);
-        switch (opt) {
-        case 0:
-            printf("%d\n", tree[extract(x, y)].sum);
+        char cmd[10];
+        int x, y;
+        scanf("%s%d%d", cmd, &x, &y);
+        switch (cmd[0]) {
+        case 'Q':
+            if (check(x, y))
+                printf("Yes\n");
+            else
+                printf("No\n");
             break;
-        case 1:
+        case 'C':
             link(x, y);
             break;
-        case 2:
+        case 'D':
             cut(x, y);
-            break;
-        case 3:
-            splay(x);
-            tree[x].key = y;
             break;
         }
     }
