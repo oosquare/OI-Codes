@@ -11,6 +11,7 @@ constexpr int maxn = 3e4;
 node tree[maxn << 2];
 int n, q, stk[maxn];
 char cmd[20];
+int faset[maxn];
 
 #define ls(x) (tree[(x)].child[0])
 #define rs(x) (tree[(x)].child[1])
@@ -21,6 +22,8 @@ char cmd[20];
 #define swap(x, y) ((x) ^= (y) ^= (x) ^= (y))
 #define update(x) (swap(ls(x), rs(x)), tree[x].rev ^= 1)
 #define which(x) (x == rs(fa(x)))
+
+int find(int x) { return x == faset[x] ? x : faset[x] = find(faset[x]); }
 
 inline void pushdown(int x) {
     if (tree[x].rev) {
@@ -104,11 +107,12 @@ inline int read() {
 inline void link() {
     int x = read(), y = read();
     makeroot(x);
-    if (findroot(y) == x) {
+    if (find(x) == find(y)) {
         printf("no\n");
     } else {
         printf("yes\n");
         fa(x) = y;
+        faset[find(x)] = faset[find(y)];
     }
 }
 
@@ -122,7 +126,7 @@ inline void modify() {
 inline void query() {
     int x = read(), y = read();
     makeroot(x);
-    if (findroot(y) != x) {
+    if (find(x) != find(y)) {
         printf("impossible\n");
     } else {
         access(y);
@@ -137,15 +141,23 @@ int main() {
     freopen("Environment/project.out", "w", stdout);
 #endif
     n = read();
-    for (int i = 1; i <= n; ++i)
+    for (int i = 1; i <= n; ++i) {
         tree[i].key = tree[i].sum = read();
+        faset[i] = i;
+    }
     q = read();
     while (q--) {
         scanf("%s", cmd);
         switch (cmd[0]) {
-            case 'b': link(); break;
-            case 'p': modify(); break;
-            case 'e': query(); break;
+        case 'b':
+            link();
+            break;
+        case 'p':
+            modify();
+            break;
+        case 'e':
+            query();
+            break;
         }
     }
     return 0;
