@@ -58,6 +58,7 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "algorithm": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "random": "cpp"
     }
 }
