@@ -1,25 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-inline char gc() {
+inline char mygetchar() {
     static char ff[100000], *A = ff, *B = ff;
     return A == B && (B = (A = ff) + fread(ff, 1, 100000, stdin), A == B)
                ? EOF
                : *A++;
 }
 
-template <typename T>
+template <typename T = int>
 T read() {
     T x = 0, s = 1;
-    char c = gc();
+    char c = mygetchar();
     while (c < '0' || '9' < c) {
         if (c == '-')
             s = -1;
-        c = gc();
+        c = mygetchar();
     }
     while ('0' <= c && c <= '9') {
         x = (x << 1) + (x << 3) + (c ^ 48);
-        c = gc();
+        c = mygetchar();
     }
     return x * s;
 }
