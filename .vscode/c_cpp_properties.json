@@ -18,7 +18,9 @@
                 "-std=c++11",
                 "-Wall",
                 "-Wparentheses",
-                "-Wuninitialized"
+                "-Wuninitialized",
+                "-Wl",
+                "-stack=53687091200"
             ],
             "browse": {
                 "path": [
