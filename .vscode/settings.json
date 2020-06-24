@@ -59,6 +59,20 @@
         "valarray": "cpp",
         "algorithm": "cpp",
         "string": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "any": "cpp",
+        "bit": "cpp",
+        "charconv": "cpp",
+        "codecvt": "cpp",
+        "cuchar": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "memory_resource": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "shared_mutex": "cpp",
+        "variant": "cpp"
     }
 }

@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-namespace IO {
-    
 inline char mygetchar() {
     static char ff[100000], *A = ff, *B = ff;
     return A == B && (B = (A = ff) + fread(ff, 1, 100000, stdin), A == B)
@@ -10,7 +8,8 @@ inline char mygetchar() {
                : *A++;
 }
 
-template <typename T = int> T read() {
+template <typename T = int>
+T read() {
     T x = 0, s = 1;
     char c = mygetchar();
     while (c < '0' || '9' < c) {
@@ -25,7 +24,8 @@ template <typename T = int> T read() {
     return x * s;
 }
 
-template <typename T = int> void writeln(T x) {
+template <typename T = int>
+void writeln(T x) {
     if (x < 0) {
         putchar('-');
         x = -x;
@@ -38,12 +38,13 @@ template <typename T = int> void writeln(T x) {
         stk[++top] = x % 10;
         x /= 10;
     }
-    while (top)
+    while (top) 
         putchar(stk[top--] + '0');
     putchar('\n');
 }
 
-template <typename T = int> void writesp(T x) {
+template <typename T = int>
+void writesp(T x) {
     if (x < 0) {
         putchar('-');
         x = -x;
@@ -56,12 +57,13 @@ template <typename T = int> void writesp(T x) {
         stk[++top] = x % 10;
         x /= 10;
     }
-    while (top)
+    while (top) 
         putchar(stk[top--] + '0');
     putchar(' ');
 }
 
-template <typename T = int> void write(T x, char blank[]) {
+template <typename T = int>
+void write(T x, char blank[]) {
     if (x < 0) {
         putchar('-');
         x = -x;
@@ -74,20 +76,39 @@ template <typename T = int> void write(T x, char blank[]) {
         stk[++top] = x % 10;
         x /= 10;
     }
-    while (top)
+    while (top) 
         putchar(stk[top--] + '0');
     putchar('\n');
     for (int i = 0; blank[i] != '\0'; ++i)
         putchar(blank[i]);
 }
 
-} // namespace IO
+constexpr int maxn = 1e5 + 10;
+constexpr int maxa = 1e6;
+
+int n, maxv, a[maxn], sum[maxa + 1], cnt[maxa + 1], vis[maxa + 1];
 
 int main() {
 #ifndef ONLINE_JUDGE
     freopen("Environment/project.in", "r", stdin);
     freopen("Environment/project.out", "w", stdout);
 #endif
-    using namespace IO;
+    n = read();
+    for (int i = 1; i <= n; ++i) {
+        a[i] = read();
+        ++cnt[a[i]];
+        maxv = max(maxv, a[i]);
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (vis[a[i]])
+            continue;
+        vis[a[i]] = true;
+        for (int j = a[i]; j <= maxv; j += a[i]) {
+            sum[j] += cnt[a[i]];
+        }
+    }
+    for (int i = 1; i <= n; ++i) {
+        writeln(sum[a[i]] - 1);
+    }
     return 0;
 }

@@ -2,7 +2,7 @@
 using namespace std;
 
 namespace IO {
-    
+
 inline char mygetchar() {
     static char ff[100000], *A = ff, *B = ff;
     return A == B && (B = (A = ff) + fread(ff, 1, 100000, stdin), A == B)
@@ -83,11 +83,57 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
+typedef long long ll;
+
+constexpr int maxn = 11;
+
+int n, t;
+ll a[maxn], b[maxn];
+
+ll exGCD(ll a, ll b, ll &x, ll &y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    } else {
+        ll d = exGCD(b, a % b, x, y);
+        ll t = x;
+        x = y;
+        y = t - a / b * y;
+        return d;
+    }
+}
+
+ll inv(ll x, ll mod) {
+    ll a, b;
+    exGCD(x, mod, a, b);
+    return a;
+}
+
+ll CRT() {
+    ll prod = 1, ans = 0;
+    for (int i = 1; i <= n; ++i)
+        prod *= a[i];
+
+    for (int i = 1; i <= n; ++i) {
+        ll m = prod / a[i];
+        ll v = inv(m, a[i]);
+        ans = ((ans + b[i] * v * m) % prod + prod) % prod;
+    }
+    return ans;
+}
+
 int main() {
 #ifndef ONLINE_JUDGE
     freopen("Environment/project.in", "r", stdin);
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    n = read();
+    for (int i = 1; i <= n; ++i) {
+        a[i] = read<ll>();
+        b[i] = read<ll>();
+    }
+    writeln(CRT());
     return 0;
 }
