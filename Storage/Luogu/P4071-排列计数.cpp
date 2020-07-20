@@ -83,63 +83,34 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
-struct node {
-    int fail;
-    map<int, int> to;
-    vector<int> id;
-};
+typedef long long ll;
 
-constexpr int maxn = 5e4 + 10;
-constexpr int maxm = 1e5 + 10;
-constexpr int maxl = 1e5 + 10;
+constexpr ll mod = 1e9 + 7;
+constexpr int maxn = 1e6;
+int t, n, m;
+ll d[maxn + 10], factor[maxn + 10];
 
-node trie[maxl * 4];
-int root = 1, uuid = 1, n, m;
-unordered_set<int> vis[maxn];
-
-void insert(int pattern[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = pattern[i];
-        if (!trie[x].to[c])
-            ++trie[x].to[c];
-        x = trie[x].to[c];
+ll power(ll x, ll k) {
+    ll res = 1;
+    while (k) {
+        if (k % 2)
+            res = res * x % mod;
+        x = x * x % mod;
+        k /= 2;
     }
-    trie[x].id.push_back(id);
+    return res % mod;
 }
 
-void preprocess(int v) {
-    queue<int> q;
-    q.push(root);
-    while (!q.empty()) {
-        int x = q.front();
-        q.pop();
-        for (auto i : trie[x].to) {
-            int c = i.first, y = i.second, j = 0;
-            if (x == root) {
-                trie[y].fail = root;
-                q.push(y);
-                continue;
-            }
-            for (j = trie[x].fail; j; j = trie[j].fail) {
-                if (trie[j].to[c]) {
-                    trie[y].fail = trie[j].to[c];
-                    break;
-                }
-            }
-            if (j == 0)
-                trie[y].fail = root;
-            q.push(y);
-        }
-    }
+ll inv(ll x) {
+    return power(x, mod - 2);
 }
 
-void match(int str[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = str[i];
-        
-    }
+ll C(int n, int m) {
+    if (n < m)
+        return 0;
+    if (m == 0)
+        return 1;
+    return factor[n] * inv(factor[m]) % mod * inv(factor[n - m]) % mod;
 }
 
 int main() {
@@ -148,5 +119,17 @@ int main() {
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    d[1] = 0;
+    d[2] = factor[1] = 1;
+    for (int i = 3; i <= maxn; ++i)
+        d[i] = (i - 1) * (d[i - 1] + d[i - 2]) % mod;
+    for (int i = 2; i <= maxn; ++i)
+        factor[i] = factor[i - 1] * i % mod;
+    t = read();
+    while (t--) {
+        n = read();
+        m = read();
+        writeln(n == m ? 1 : C(n, m) * d[n - m] % mod);
+    }
     return 0;
 }

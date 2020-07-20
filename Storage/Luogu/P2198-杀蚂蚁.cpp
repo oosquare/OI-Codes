@@ -2,7 +2,7 @@
 using namespace std;
 
 namespace IO {
-    
+
 inline char mygetchar() {
     static char ff[100000], *A = ff, *B = ff;
     return A == B && (B = (A = ff) + fread(ff, 1, 100000, stdin), A == B)
@@ -83,64 +83,12 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
-struct node {
-    int fail;
-    map<int, int> to;
-    vector<int> id;
-};
+typedef __int128 __int258;
+typedef __int258 ll;
 
-constexpr int maxn = 5e4 + 10;
-constexpr int maxm = 1e5 + 10;
-constexpr int maxl = 1e5 + 10;
+constexpr int maxn = 5000;
 
-node trie[maxl * 4];
-int root = 1, uuid = 1, n, m;
-unordered_set<int> vis[maxn];
-
-void insert(int pattern[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = pattern[i];
-        if (!trie[x].to[c])
-            ++trie[x].to[c];
-        x = trie[x].to[c];
-    }
-    trie[x].id.push_back(id);
-}
-
-void preprocess(int v) {
-    queue<int> q;
-    q.push(root);
-    while (!q.empty()) {
-        int x = q.front();
-        q.pop();
-        for (auto i : trie[x].to) {
-            int c = i.first, y = i.second, j = 0;
-            if (x == root) {
-                trie[y].fail = root;
-                q.push(y);
-                continue;
-            }
-            for (j = trie[x].fail; j; j = trie[j].fail) {
-                if (trie[j].to[c]) {
-                    trie[y].fail = trie[j].to[c];
-                    break;
-                }
-            }
-            if (j == 0)
-                trie[y].fail = root;
-            q.push(y);
-        }
-    }
-}
-
-void match(int str[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = str[i];
-        
-    }
-}
+ll f[maxn][maxn], f2[maxn][maxn], r, g, b, t, n, ans;
 
 int main() {
 #ifndef ONLINE_JUDGE
@@ -148,5 +96,22 @@ int main() {
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    n = read<ll>();
+    r = read<ll>();
+    g = read<ll>();
+    b = read<ll>();
+    t = read<ll>();
+    for (int i = 1; i <= n; ++i)
+        f[i][0] = (i - 1) * g * t + f[i - 1][0];
+    for (int i = 1; i <= n; ++i)
+        for (int j = 1; j < i; ++j)
+            f[i][j] = max(f[i - 1][j] + g * (i - j - 1) * (j * b + t),
+                          f[i - 1][j - 1] + g * (i - j) * ((j - 1) * b + t));
+    for (int i = 0; i <= n; ++i)
+        for (int j = 0; j <= i; ++j)
+            ans = max(ans, f[i][j] + (n - i) * (j * b + t) * r +
+                               (n - i) * (j * b + t) * (i - j) * g);
+    writeln(ans);
     return 0;
 }
+

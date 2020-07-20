@@ -83,63 +83,31 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
-struct node {
-    int fail;
-    map<int, int> to;
-    vector<int> id;
-};
+typedef __int128 ll;
 
-constexpr int maxn = 5e4 + 10;
-constexpr int maxm = 1e5 + 10;
-constexpr int maxl = 1e5 + 10;
+constexpr int maxk = 11;
 
-node trie[maxl * 4];
-int root = 1, uuid = 1, n, m;
-unordered_set<int> vis[maxn];
+ll a[maxk], b[maxk], ans, prod = 1;
+int k;
 
-void insert(int pattern[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = pattern[i];
-        if (!trie[x].to[c])
-            ++trie[x].to[c];
-        x = trie[x].to[c];
-    }
-    trie[x].id.push_back(id);
-}
-
-void preprocess(int v) {
-    queue<int> q;
-    q.push(root);
-    while (!q.empty()) {
-        int x = q.front();
-        q.pop();
-        for (auto i : trie[x].to) {
-            int c = i.first, y = i.second, j = 0;
-            if (x == root) {
-                trie[y].fail = root;
-                q.push(y);
-                continue;
-            }
-            for (j = trie[x].fail; j; j = trie[j].fail) {
-                if (trie[j].to[c]) {
-                    trie[y].fail = trie[j].to[c];
-                    break;
-                }
-            }
-            if (j == 0)
-                trie[y].fail = root;
-            q.push(y);
-        }
+ll exGCD(ll a, ll b, ll &x, ll &y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    } else {
+        ll d = exGCD(b, a % b, x, y);
+        ll t = x;
+        x = y;
+        y = t - a / b * y;
+        return d;
     }
 }
 
-void match(int str[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = str[i];
-        
-    }
+ll inverse(ll x, ll mod) {
+    ll x0, y0;
+    exGCD(x, mod, x0, y0);
+    return (x0 + mod) % mod;
 }
 
 int main() {
@@ -148,5 +116,19 @@ int main() {
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    k = read();
+    for (int i = 1; i <= k; ++i) {
+        a[i] = read<ll>();
+    }
+    for (int i = 1; i <= k; ++i) {
+        b[i] = read<ll>();
+        prod *= b[i];
+    }
+    for (int i = 1; i <= k; ++i) {
+        ll m = prod / b[i];
+        ll v = inverse(m, b[i]);
+        ans = (ans + a[i] * m % prod * v % prod) % prod;
+    }
+    writeln(ans);
     return 0;
 }

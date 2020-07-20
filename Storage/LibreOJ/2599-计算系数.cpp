@@ -83,63 +83,30 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
-struct node {
-    int fail;
-    map<int, int> to;
-    vector<int> id;
-};
+typedef long long ll;
 
-constexpr int maxn = 5e4 + 10;
-constexpr int maxm = 1e5 + 10;
-constexpr int maxl = 1e5 + 10;
+constexpr ll mod = 10007;
 
-node trie[maxl * 4];
-int root = 1, uuid = 1, n, m;
-unordered_set<int> vis[maxn];
+ll a, b, k, n, m;
 
-void insert(int pattern[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = pattern[i];
-        if (!trie[x].to[c])
-            ++trie[x].to[c];
-        x = trie[x].to[c];
+ll power(ll x, ll k) {
+    ll res = 1;
+    while (k) {
+        if (k % 2 == 1)
+            res = res * x % mod;
+        x = x * x % mod;
+        k /= 2;
     }
-    trie[x].id.push_back(id);
+    return res % mod;
 }
 
-void preprocess(int v) {
-    queue<int> q;
-    q.push(root);
-    while (!q.empty()) {
-        int x = q.front();
-        q.pop();
-        for (auto i : trie[x].to) {
-            int c = i.first, y = i.second, j = 0;
-            if (x == root) {
-                trie[y].fail = root;
-                q.push(y);
-                continue;
-            }
-            for (j = trie[x].fail; j; j = trie[j].fail) {
-                if (trie[j].to[c]) {
-                    trie[y].fail = trie[j].to[c];
-                    break;
-                }
-            }
-            if (j == 0)
-                trie[y].fail = root;
-            q.push(y);
-        }
-    }
-}
-
-void match(int str[], int len, int id) {
-    int x = root;
-    for (int i = 1; i <= len; ++i) {
-        int c = str[i];
-        
-    }
+ll C(ll n, ll m) {
+    ll a = 1, b = 1;
+    for (int i = n - m + 1; i <= n; ++i)
+        a = a * i % mod;
+    for (int i = 1; i <= m; ++i)
+        b = b * i % mod;
+    return a * power(b, mod - 2) % mod;
 }
 
 int main() {
@@ -148,5 +115,11 @@ int main() {
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    a = read<ll>();
+    b = read<ll>();
+    k = read<ll>();
+    n = read<ll>();
+    m = read<ll>();
+    writeln(C(k, m) * power(a, n) % mod * power(b, m) % mod);
     return 0;
 }
