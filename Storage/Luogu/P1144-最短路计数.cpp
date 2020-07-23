@@ -83,11 +83,59 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
+constexpr int maxn = 1000000 + 10;
+constexpr int maxm = 2 * maxn;
+
+map<int, int> edges[maxn];
+int n, m;
+bool vis[maxn];
+int cnt[maxn], dis[maxn];
+
+void link(int x, int y) {
+    ++edges[x][y];
+    ++edges[y][x];
+}
+
+void BFS() {
+    queue<int> q;
+    q.push(1);
+    memset(dis, 0x3f, sizeof(dis));
+    dis[1] = 0;
+    vis[1] = true;
+    cnt[1] = 1;
+    while (!q.empty()) {
+        int x = q.front();
+        q.pop();
+        for (auto i : edges[x]) {
+            int y = i.first, c = i.second;
+            if (dis[y] > dis[x] + 1) {
+                dis[y] = dis[x] + 1;
+                cnt[y] = cnt[x] * c % 100003;
+            } else if (dis[y] == dis[x] + 1) {
+                cnt[y] = (cnt[y] + cnt[x] * c % 100003) % 100003;
+            }
+            if (vis[y])
+                continue;
+            vis[y] = true;
+            q.push(y);
+        }
+    }
+}
+
 int main() {
 #ifndef ONLINE_JUDGE
     freopen("Environment/project.in", "r", stdin);
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    n = read();
+    m = read();
+    for (int i = 1; i <= m; ++i) {
+        int x = read(), y = read();
+        link(x, y);
+    }
+    BFS();
+    for (int i = 1; i <= n; ++i)
+        writeln(cnt[i]);
     return 0;
 }

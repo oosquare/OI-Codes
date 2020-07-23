@@ -83,11 +83,38 @@ template <typename T = int> void write(T x, char blank[]) {
 
 } // namespace IO
 
+constexpr int maxn = 500000 + 10;
+
+typedef long long ll;
+
+ll n, sum, pos, ans, num[maxn];
+
 int main() {
 #ifndef ONLINE_JUDGE
     freopen("Environment/project.in", "r", stdin);
     freopen("Environment/project.out", "w", stdout);
 #endif
     using namespace IO;
+    n = read<ll>();
+    for (int i = 1; i <= n; ++i) {
+        num[i] = read<ll>();
+        sum ^= num[i];
+    }
+    if (sum == 0) {
+        printf("lose\n");
+        return 0;
+    }
+    for (int i = 1; i <= n; ++i) {
+        if ((num[i] ^ sum) < num[i]) {
+            ans = num[i] - (num[i] ^ sum);
+            pos = i;
+            num[i] ^= sum;
+            break;
+        }
+    }
+    writesp(ans);
+    writeln(pos);
+    for (int i = 1; i <= n; ++i)
+        writesp(num[i]);
     return 0;
 }
