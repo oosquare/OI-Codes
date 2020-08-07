@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "D:/Programs/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,7 +14,7 @@
             "compilerPath": "D:\\Programs\\MinGW64\\bin\\g++.exe",
             "cStandard": "c11",
             "cppStandard": "c++11",
-            "intelliSenseMode": "gcc-x64",
+            "intelliSenseMode": "clang-x64",
             "compilerArgs": [
                 "-std=c++11",
                 "-Wall",
@@ -21,33 +22,6 @@
                 "-Wuninitialized",
                 "-Wl",
                 "-stack=53687091200"
-            ],
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/**"
-                ],
-                "limitSymbolsToIncludedHeaders": true
-            }
-        },
-        {
-            "name": "Linux",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "compilerPath": "/usr/bin/g++",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
-            "intelliSenseMode": "gcc-x64",
-            "compilerArgs": [
-                "-std=c++11",
-                "-Wall",
-                "-Wparentheses",
-                "-Wuninitialized"
             ],
             "browse": {
                 "path": [

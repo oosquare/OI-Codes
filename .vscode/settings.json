@@ -74,5 +74,6 @@
         "string_view": "cpp",
         "shared_mutex": "cpp",
         "variant": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
