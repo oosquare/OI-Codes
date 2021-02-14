@@ -31,7 +31,7 @@ struct querys {
     ll a;
 };
 
-constexpr int maxn = 3e5 + 10;
+constexpr int maxn = 6e6 + 10;
 constexpr int oo = 0x3f3f3f3f;
 
 querys q[maxn], q1[maxn], q2[maxn];

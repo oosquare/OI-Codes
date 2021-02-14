@@ -1,93 +1,144 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-namespace IO {
-    
-inline char mygetchar() {
-    static char ff[100000], *A = ff, *B = ff;
-    return A == B && (B = (A = ff) + fread(ff, 1, 100000, stdin), A == B)
-               ? EOF
-               : *A++;
+constexpr int maxn = 3e5 + 10;
+
+struct robot {
+    int a, d, p;
+
+    friend bool operator<(robot i, robot j) {
+        return i.p * j.a < j.p * i.a;
+    }
+};
+
+struct node {
+    int x, y, ls, rs, size;
+    unsigned priority; 
+};
+
+robot rbs[maxn];
+int atk, n, ans;
+int suma[maxn], sump[maxn];
+node tree[maxn];
+int uuid, root;
+unsigned seed;
+
+int calc(int i) {
+    return (sump[i] - 1) * rbs[i].a + rbs[i].p * suma[i + 1];
 }
 
-template <typename T = int> T read() {
-    T x = 0, s = 1;
-    char c = mygetchar();
-    while (c < '0' || '9' < c) {
-        if (c == '-')
-            s = -1;
-        c = mygetchar();
-    }
-    while ('0' <= c && c <= '9') {
-        x = (x << 1) + (x << 3) + (c ^ 48);
-        c = mygetchar();
-    }
-    return x * s;
+inline int &ls(int x) {
+    return tree[x].ls;
 }
 
-template <typename T = int> void writeln(T x) {
-    if (x < 0) {
-        putchar('-');
-        x = -x;
-    }
-    static int stk[100];
-    int top = 0;
-    if (x == 0)
-        stk[++top] = 0;
-    while (x) {
-        stk[++top] = x % 10;
-        x /= 10;
-    }
-    while (top)
-        putchar(stk[top--] + '0');
-    putchar('\n');
+inline int &rs(int x) {
+    return tree[x].rs;
 }
 
-template <typename T = int> void writesp(T x) {
-    if (x < 0) {
-        putchar('-');
-        x = -x;
-    }
-    static int stk[100];
-    int top = 0;
-    if (x == 0)
-        stk[++top] = 0;
-    while (x) {
-        stk[++top] = x % 10;
-        x /= 10;
-    }
-    while (top)
-        putchar(stk[top--] + '0');
-    putchar(' ');
+void pushup(int x) {
+    tree[x].size = tree[ls(x)].size + tree[rs(x)].size + 1;
 }
 
-template <typename T = int> void write(T x, char blank[]) {
-    if (x < 0) {
-        putchar('-');
-        x = -x;
-    }
-    static int stk[100];
-    int top = 0;
-    if (x == 0)
-        stk[++top] = 0;
-    while (x) {
-        stk[++top] = x % 10;
-        x /= 10;
-    }
-    while (top)
-        putchar(stk[top--] + '0');
-    putchar('\n');
-    for (int i = 0; blank[i] != '\0'; ++i)
-        putchar(blank[i]);
+unsigned myrandom() {
+    return seed = ((seed + 3) * 53173 + 18543);
 }
 
-} // namespace IO
+int create(int x, int y) {
+    tree[++uuid] = {x, y, 0, 0, 1, myrandom()};
+    return uuid;
+}
+
+void splitv(int root, int val, int &x, int &y) {
+    if (!root) {
+        x = y = 0;
+        return;
+    }
+    if (tree[root].x <= val) {
+        x = root;
+        splitv(rs(x), val, rs(x), y);
+        pushup(x);
+    } else {
+        y = root;
+        splitv(ls(y), val, x, ls(y));
+        pushup(y);
+    }
+}
+
+void splits(int root, int sze, int &x, int &y) {
+    if (!root) {
+        x = y = 0;
+        return;
+    }
+    if (tree[ls(x)].size + 1 <= sze) {
+        x = root;
+        splitv(rs(x), val, rs(x), y);
+        pushup(x);
+    } else {
+        y = root;
+        splitv(ls(y), val, x, ls(y));
+        pushup(y);
+    }
+}
+
+int merge(int x, int y) {
+    if (!x || !y)
+        return x + y;
+    if (tree[x].priority > tree[y].priority) {
+        rs(x) = merge(rs(x), y);
+        pushup(x);
+        return x;
+    } else {
+        ls(y) = merge(x, ls(y));
+        pushup(y);
+        return y;
+    }
+}
+
+void insert(int x, int y) {
+    int id = create(x, y);
+    int rtl, rtr;
+    splitv(root, x, rtl, rtr);
+    int rt1, rt2, rt3;
+    while (tree[rtl].size >= 2) {
+        splits(rtl, tree[rtl].size - 2, rt1, rt2);
+        splits(rt2, 1, rt2, rt3);
+        if ((tree[rt3].y - tree[rt2].y) * (x - tree[rt3].x) < (y - tree[rt3].y) * (tree[rt3].x - tree[rt2].x)) {
+            rtl = merge(merge(rt1, rt2), rt3);
+            break;
+        } else {
+            int tmp;
+            splits(rt1, tree[rt1].size - 1, rt1, tmp);
+            rt3 = rt2;
+            rt2 = tmp;
+        }
+    }
+    while (tree[rtr].size >= 2) {
+        splits(rtr, 1, rt1, rt2);
+        splits(rt2, 1, rt2, rt3);
+    }
+}
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
+    freopen("ENvironment/project.in", "r", stdin);
     freopen("Environment/project.out", "w", stdout);
+#else
+    freopen("fittest.in", "r", stdin);
+    freopen("fittest.out", "w", stdout);
 #endif
-    using namespace IO;
+    ios::sync_with_stdio(false);
+    cin >> n >> atk;
+    for (int i = 1; i <= n; ++i)
+        cin >> rbs[i].a >> rbs[i].d, rbs[i].p = (int)ceil(1.0 * rbs[i].d / atk);
+    sort(rbs + 1, rbs + 1 + n);
+    for (int i = n; i >= 1; --i)
+        suma[i] = suma[i + 1] + rbs[i].a;
+    for (int i = 1; i <= n; ++i)
+        sump[i] = sump[i - 1] + rbs[i].p;
+    for (int i = 1; i <= n; ++i)
+        ans += (sump[i] - 1) * rbs[i].a;
+    
+
+
     return 0;
 }

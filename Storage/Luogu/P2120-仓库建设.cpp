@@ -1,37 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+constexpr int maxn = 1e6 + 10;
+
 typedef long long ll;
-const int maxn = 1e6 + 10;
+
 int n;
-ll x[maxn], p[maxn], c[maxn], s[maxn];
-ll f[maxn];
-int q[maxn];
+ll f[maxn], suf[maxn], pos[maxn], cnt[maxn], cost[maxn], dis[maxn];
+int que[maxn], l, r;
 
-inline ll X(int i) { return p[i]; }
+ll X(int i) {
+    return cnt[i];
+}
 
-inline ll Y(int i) { return f[i] + s[i]; }
+ll Y(int i) {
+    return f[i] + suf[i + 1];
+}
 
-double slope(int i, int j) { return 1.0 * (Y(j) - Y(i)) / (X(j) - X(i)); }
+ll calc(int j, int i) {
+    return (suf[j + 1] - suf[i + 1]) - (cnt[i] - cnt[j]) * dis[i];
+}
 
 int main() {
-    scanf("%d", &n);
+#ifndef ONLINE_JUDGE
+    freopen("Environment/project.in", "r", stdin);
+    freopen("Environment/project.out", "w", stdout);
+#endif
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for (int i = 1; i <= n; ++i)
+        cin >> pos[i] >> cnt[i] >> cost[i], cnt[i] += cnt[i - 1];
+    for (int i = 1; i <= n; ++i)
+        dis[i] = pos[n] - pos[i];
+    for (int i = n; i >= 1; --i)
+        suf[i] = suf[i + 1] + (cnt[i] - cnt[i - 1]) * dis[i];
+    
+    que[l = r = 1] = 0;
     for (int i = 1; i <= n; ++i) {
-        scanf("%lld%lld%lld", &x[i], &p[i], &c[i]);
-        s[i] = s[i - 1] + x[i] * p[i];
-        p[i] += p[i - 1];
-    }
-    int l = 1, r = 1;
-    q[l] = 0;
-    for (int i = 1; i <= n; ++i) {
-        while (l < r && slope(q[l], q[l + 1]) < x[i])
+        while (l < r && (Y(que[l + 1]) - Y(que[l])) <= (-dis[i]) * (X(que[l + 1]) - X(que[l])))
             ++l;
-        int j = q[l];
-        f[i] = f[j] + x[i] * (p[i] - p[j]) - (s[i] - s[j]) + c[i];
-        while (l < r && slope(q[r - 1], q[r]) > slope(q[r], i))
+        f[i] = f[que[l]] + calc(que[l], i) + cost[i];
+        while (l < r && (Y(que[r]) - Y(que[r - 1])) * (X(i) - X(que[r])) >= (X(que[r]) - X(que[r - 1])) * (Y(i) - Y(que[r])))
             --r;
-        q[++r] = i;
+        que[++r] = i;
     }
-    printf("%lld\n", f[n]);
+    cout << f[n] << endl;
     return 0;
 }

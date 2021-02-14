@@ -40,7 +40,7 @@ int query(int p) {
     return res;
 }
 
-void BinarySolve(const vector<num> &ns, const vector<querys> qs, int l, int r) {
+void (const vector<num> &ns, const vector<querys> qs, int l, int r) {
     if (l == r) {
         for (auto i : qs)
             ans[i.id] = l;
@@ -64,8 +64,8 @@ void BinarySolve(const vector<num> &ns, const vector<querys> qs, int l, int r) {
     }
     for (auto i : nsl)
         init(i.p);
-    BinarySolve(nsl, qsl, l, mid);
-    BinarySolve(nsr, qsr, mid + 1, r);
+    (nsl, qsl, l, mid);
+    (nsr, qsr, mid + 1, r);
 }
 
 int main() {
@@ -86,7 +86,7 @@ int main() {
         scanf("%d%d%d", &l, &r, &k);
         qs.push_back({l, r, k, i});
     }
-    BinarySolve(ns, qs, minv, maxv);
+    (ns, qs, minv, maxv);
     for (int i = 1; i <= m; ++i)
         printf("%d\n", ans[i]);
     return 0;
