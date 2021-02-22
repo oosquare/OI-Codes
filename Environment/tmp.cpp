@@ -1,115 +1,57 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
-constexpr int maxn = 300 + 10;
-
-struct Node {
-    int prev, next[26];
-
-    int &operator[](int x) {
-        return next[x];
-    }
+const int N = 8e4 + 5;
+int n, t;
+struct point {
+    int x, y;
 };
+vector<point> a[N];
 
-string combine(string a, char b) {
-    return a + b;
-}
-
-struct SequenceAutomaton {
-    Node nodes[maxn];
-
-    void clear() {
-        memset(node, 0, sizoef(node));
-    }
-    
-    void preprocess(string str) {
-        int last[maxn];
-        for (int i = str.size() - 1; i >= 0; --i) {
-            for (int j = 0; j < 26; ++j)
-                nodes[i][j] = last[str[i]];
-            last[str[i]] = i;
-        }
-    }
-
-    void search(int dep, int len, int cur, string now, vector & res) {
-        if (dep - 1 == len || res.size() == n)
-            return;
-        res.push_back(now);
-        for (int i = 0; i < 26; ++i)
-            if (node[cur][i])
-                search(dep + 1, len, node[cur][i], combine(now, i + 'a'), res);
-    }    
-};
-
-struct Trie {
-    int next[maxn * maxn][26], tag[maxn * maxn], uuid, cnt;
-
-    Trie() : uuid(1), cnt(0) {};
-
-    void clear() {
-        uuid = 1;
-        cnt = 0;
-        memset(next, 0, sizeof(next));
-        memset(tag, 0, sizeof(tag));
-    }
-        
-    int insert(string str) {
-        int x = 1;
-        for (int i = 0; i < str.size(); ++i) {
-            if (!next[x][str[i] - 'a'])
-                next[x][str[i] - 'a'] = ++uuid;
-            x = next[x][str[i] - 'a'];
-        }
-        if (!tag[x])
-            tag[x] = ++cnt;
-        return tag[x];
-    }
-};
-
-struct edge {
-    int to, next;
-};
-
-int n;
-string str[maxn];
-vector seq[maxn];
-edge graph[maxn * maxn];
-int head[maxn * 10], uuid, vis[maxn * 10], match[maxn * 10];
-
-void link(int x, int y) {
-    edge[++uuid] = {y, head[x]};
-    head[x] = uuid;
-}
-
-bool find(int x) {
-    for (int i = head[x], y; y = graph[i].to, i; i = graph[i].next) {
-        if (vis[y])
-            continue;
-        vis[y] = true;
-        if (!match[y] || find(match[y])) {
-            match[y] = x;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool check(int mid) {
-        
+inline bool check(point p, int k) {
+    int cnt = 0;
+    for (int i = 0, in = (int)a[k].size(); i < in - 1; ++i) {
+        if (a[k][i].y == a[k][i + 1].y) continue;
+        if (p.y < min(a[k][i].y, a[k][i + 1].y) || p.y >= max(a[k][i].y, a[k][i + 1].y)) continue;
+        long double x = 1.0 * (p.y - a[k][i].y) * (a[k][i + 1].x - a[k][i].x) / (a[k][i + 1].y - a[k][i].y) + a[k][i].x;
+        if (x > p.x)
+            ++cnt;
+    }   
+    return cnt % 2 == 1;
 }
 
 int main() {
-#ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+#ifdef ONLINE_JDUGE
+    freopen("skip.in", "r", stdin);
+    freopen("skip.out", "w", stdout);  
 #else
-    freopen("diff.in", "r", stdin);
-    freopen("diff.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     ios::sync_with_stdio(false);
     cin >> n;
-    for (int i = 1; i <= n; ++i)
-        cin >> (str[i] + 1);
-    
-    return 0;
+    for (int i = 1, k, lst, fir, sec; i <= n; ++i) {
+        cin >> k;
+        cin >> fir;
+        lst = fir;
+        for (int j = 2; j <= k; ++j) {
+            cin >> sec;
+            a[i].push_back(point{lst, sec});
+            lst = sec;
+        }
+        a[i].push_back(point{fir, sec});
+    }
+    cin >> t;
+    for (int i = 1; i <= t; ++i) {
+        int x, y, f = 0;
+        cin >> x >> y;
+        for (int j = 1; j <= n; ++j)
+            if (check(point{x, y}, j)) {
+                cout << j << '\n';
+                f = 1;
+                break;
+            }
+        if (!f) cout << -1 << '\n';
+    }
 }
