@@ -98,8 +98,8 @@ bool check(ll x) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d", &n, &m);
     source = 2 * n + 1, sink = 2 * n + 2;

@@ -78,8 +78,8 @@ long long Dinic() {
 
 signed main() {
 /*    #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif*/
     scanf("%lld%lld", &m, &n);
     source = m + n + 1;

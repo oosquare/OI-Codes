@@ -67,8 +67,8 @@ int query(int x, int l, int r, int ql, int qr) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     t = read();
     int cnt = 0;

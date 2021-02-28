@@ -122,8 +122,8 @@ void build() {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d%d", &r, &c, &d);
     for (int i = 1; i <= r; ++i)

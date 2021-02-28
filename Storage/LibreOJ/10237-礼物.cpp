@@ -187,8 +187,8 @@ ll p, n, m, sum, ans = 1, w[10];
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     p = IO::read<ll>();
     n = IO::read<ll>();

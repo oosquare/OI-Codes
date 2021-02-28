@@ -91,8 +91,8 @@ int n, m;
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     using namespace IO;
     n = read();

@@ -62,8 +62,8 @@ inline int getid(int x) {
 
 int main(int argc, char *argv[]) {
 #if !defined(ONLINE_JUDGE) && FILE_IO
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
     clock_t stime = clock();
 #endif
     // [ Codes ] ////////////////////////

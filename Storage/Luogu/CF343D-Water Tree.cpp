@@ -136,8 +136,8 @@ inline int queryNode(int x) { return query(1, 1, n, dfn[x]); }
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     n = read<int>();
     for (int i = 1; i < n; ++i) {

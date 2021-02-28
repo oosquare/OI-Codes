@@ -67,8 +67,8 @@ int Dinic() {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d%d", &n, &p, &q);
     source = 2 * n + p + q + 1;

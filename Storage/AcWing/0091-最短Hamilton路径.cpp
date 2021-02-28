@@ -20,8 +20,8 @@ int f[21][(1 << 20) + 10], graph[21][21], n;
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     n = read();
     for (int i = 0; i < n; ++i)

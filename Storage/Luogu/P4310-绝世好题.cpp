@@ -7,8 +7,8 @@ int n, arr[maxn], f[maxn], ans;
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     ios::sync_with_stdio(false);
     cin >> n;

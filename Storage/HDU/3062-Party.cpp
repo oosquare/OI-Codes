@@ -51,8 +51,8 @@ bool check() {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     while (scanf("%d%d", &n, &m) != EOF) {
         memset(head, 0, sizeof(head));

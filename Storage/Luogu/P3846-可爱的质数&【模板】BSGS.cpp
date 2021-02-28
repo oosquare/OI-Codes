@@ -118,8 +118,8 @@ bool BSGS(int x, int y) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     using namespace IO;
     p = read(), b = read(), n = read();

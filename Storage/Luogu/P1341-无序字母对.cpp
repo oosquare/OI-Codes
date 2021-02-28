@@ -34,8 +34,8 @@ void hierholzer(int x) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     n = read();
     int ss = 0x3f3f3f3f;

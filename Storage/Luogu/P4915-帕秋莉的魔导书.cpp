@@ -155,8 +155,8 @@ ll query(int &x, ll l, ll r, ll ql, ll qr) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     // 帕秋莉, GO!
     using namespace IO;

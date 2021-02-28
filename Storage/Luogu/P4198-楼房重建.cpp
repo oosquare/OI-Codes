@@ -52,8 +52,8 @@ void modify(int x, int l, int r, int p, double v) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d", &n, &m);
     while (m--) {

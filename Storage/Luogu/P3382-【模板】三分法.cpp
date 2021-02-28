@@ -44,8 +44,8 @@ constexpr double epsilon = 1e-8;
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%lf%lf", &n, &l, &r);
     for (int i = 0; i <= n; ++i) {

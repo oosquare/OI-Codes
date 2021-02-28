@@ -39,8 +39,8 @@ long long GCD(long long x, long long y) { return y == 0 ? x : GCD(y, x % y); }
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     n = read<int>();
     m = read<int>();

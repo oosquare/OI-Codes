@@ -70,8 +70,8 @@ void (const vector<num> &ns, const vector<querys> qs, int l, int r) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d", &n, &m);
     for (int i = 1; i <= n; ++i) {

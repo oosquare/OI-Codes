@@ -76,8 +76,8 @@ void build(int x, int l, int r) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     t = read();
     for (int i = 1; i <= t; ++i) {

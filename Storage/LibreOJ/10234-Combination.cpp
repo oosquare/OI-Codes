@@ -44,8 +44,8 @@ ll lucas(ll n, ll m) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     fac[0] = fac[1] = 1;
     inv[0] = inv[1] = 1;

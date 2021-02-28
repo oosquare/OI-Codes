@@ -163,8 +163,8 @@ void BinarySolve(const vector<nums> &ns, const vector<querys> qs, int l, int r) 
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     using namespace IO;
     n = read(), m = read();

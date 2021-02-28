@@ -108,8 +108,8 @@ inline void cut(int x, int y) {
 
 int main() {
 #if !defined(ONLINE_JUDGE) && FILEIO
-    freopen("Environment/project.in", "r", stdout);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdout);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d", &n);
     for (int i = 1; i <= n + 1; ++i)

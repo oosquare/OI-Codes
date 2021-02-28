@@ -26,8 +26,8 @@ void link(int x, int y, int w, int l) {
 
 int main() {
 #ifndef ONLINE_JUDGE
-    freopen("Environment/project.in", "r", stdin);
-    freopen("Environment/project.out", "w", stdout);
+    freopen("project.in", "r", stdin);
+    freopen("project.out", "w", stdout);
 #endif
     scanf("%d%d%d%d", &n, &m, &p, &q);
     for (int i = 1; i <= m; ++i) {
