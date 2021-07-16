@@ -77,5 +77,8 @@
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "editor.defaultFormatter": "xaver.clang-format",
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, UseTab: Never, IndentWidth: 4, TabWidth: 4 }"
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, UseTab: Never, IndentWidth: 4, TabWidth: 4 }",
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    }
 }
