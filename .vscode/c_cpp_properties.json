@@ -4,19 +4,19 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "D:/Programs/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++/**"
+                "C:/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/10.3.0/include/c++**"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "D:\\Programs\\MinGW64\\bin\\g++.exe",
+            "compilerPath": "C:\\TDM-GCC-64\\bin\\g++.exe",
             "cStandard": "c11",
-            "cppStandard": "c++11",
-            "intelliSenseMode": "clang-x64",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64",
             "compilerArgs": [
-                "-std=c++11",
+                "-std=c++17",
                 "-Wall",
                 "-Wparentheses",
                 "-Wuninitialized",

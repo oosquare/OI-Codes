@@ -4,16 +4,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
-            "type": "shell",
             "label": "g++.exe build active file",
-            "command": "D:\\Programs\\MinGW64\\bin\\g++.exe",
+            "type": "shell",
+            "command": "C:/TDM-GCC-64/bin/g++.exe",
             "args": [
                 "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
-                "-std=c++11",
+                "-std=c++17",
                 "-Wall",
                 "-Wparentheses",
                 "-Wuninitialized"
@@ -22,14 +21,12 @@
                 "reveal": "silent",
                 "echo": true,
                 "showReuseMessage": false,
-                "panel": "shared",
+                "panel": "shared"
             },
             "options": {
-                "cwd": "D:\\Programs\\MinGW64\\bin"
+                "cwd": "C:/TDM-GCC-64/bin"
             },
-            "problemMatcher": [
-                "$gcc"
-            ],
+            "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
