@@ -1,11 +1,3 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <utility>
-#include <numeric>
-#include <vector>
-using namespace std;
-
 namespace IO {
 
 inline char mygetchar() {

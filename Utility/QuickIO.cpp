@@ -12,9 +12,9 @@ template <typename T = int> T read() {
     return x * s;
 }
 
-template <typename T> T write(T x, char sep = '\n') {
+template <typename T> void write(T x, char sep = '\n') {
     if (x == 0) {
-        putchar(x);
+        putchar('0');
         putchar(sep);
         return;
     }

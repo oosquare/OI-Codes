@@ -1,15 +1,11 @@
 #include <iostream>
-#include <cstring>
 using namespace std;
 
-constexpr int maxn = 500000 + 10;
+constexpr int maxn = 5e5 + 10;
 
-int n;
-char str[maxn];
-int sa[maxn * 2], rk[maxn * 2], old[maxn * 2], id[maxn * 2], height[maxn];
-int cnt[maxn * 2], tmp[maxn * 2];
-int st[maxn], top;
-long long sum, ans;
+int n, len;
+char str[maxn], dat[maxn * 2], ans[maxn];
+int sa[maxn * 4], rk[maxn * 4], old[maxn * 4], tmp[maxn * 4], id[maxn * 4], cnt[maxn * 4];
 
 bool equal(int x, int y, int w) {
     return old[x] == old[y] && old[x + w] == old[y + w];
@@ -62,39 +58,38 @@ void preprocess(char str[], int len) {
             break;
         }
     }
-
-    for (int i = 1, j = 0; i <= len; ++i) {
-        if (j)
-            --j;
-
-        while (str[i + j] == str[sa[rk[i] - 1] + j])
-            ++j;
-
-        height[rk[i]] = j;
-    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
-    
-    cin >> (str + 1);
-    n = strlen(str + 1);
-    preprocess(str, n);
-
-    for (int i = 1; i <= n; ++i)
-        ans += 1ll * (n - 1) * (n - i + 1);
+    cin >> n;
 
     for (int i = 1; i <= n; ++i) {
-        while (top && height[st[top]] >= height[i]) {
-            sum -= 1ll * height[st[top]] * (st[top] - st[top - 1]);
-            --top;
-        }
-
-        st[++top] = i;
-        sum += 1ll * height[i] * (i - st[top - 1]);
-        ans -= 2 * sum; 
+        cin >> str[i];
+        dat[++len] = str[i];
     }
 
-    cout << ans << endl;
+    dat[++len] = '#';
+
+    for (int i = n; i >= 1; --i)
+        dat[++len] = str[i];
+
+    preprocess(dat, len);
+
+    int it1 = 1, it2 = n + 2;
+
+    for (int i = 1; i <= n; ++i) {
+        if (rk[it1] < rk[it2])
+            ans[i] = dat[it1++];
+        else
+            ans[i] = dat[it2++];
+    }
+
+    for (int i = 1; i <= n; ++i) {
+        cout << ans[i];
+
+        if (i % 80 == 0)
+            cout.put('\n');
+    }
     return 0;
 }
