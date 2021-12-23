@@ -1,103 +1,113 @@
-#include <algorithm>
-#include <cstdio>
+#include <iostream>
 #include <cstring>
-
+#include <vector>
 using namespace std;
 
-template <int MaxN> class SuffixArray {
-  public:
-    inline void init(char str[]) {
-        Len = strlen(str + 1);
-        for (int i = 1; i <= Len; ++i)
-            Data[i] = str[i];
-    }
+constexpr int maxn = 2.5e5 + 10;
 
-    inline void preprocess(bool sa, bool height) {
-        if (sa)
-            DAPreprocess(Len);
-        if (height)
-            heightPreprocess(Len);
-    }
+class SuffixAutomaton {
+public:
+    struct Node {
+        int next[26], link, len;
 
-    inline int atRank(int x) { return Rank[Cur][x]; }
+        Node() {
+            for (int i = 0; i < 26; ++i)
+                next[i] = 0;
 
-    inline int atSA(int x) { return SA[x]; }
-
-    inline int atHeight(int x) { return Height[x]; }
-
-  public:
-    int SA[MaxN], Rank[2][MaxN], Height[MaxN], TmpSort[MaxN], Data[MaxN], Cur,
-        Len;
-
-    void sort(int n, int m) {
-        for (int i = 0; i <= m; ++i)
-            TmpSort[i] = 0;
-        for (int i = 1; i <= n; ++i)
-            ++TmpSort[Rank[Cur][Rank[Cur ^ 1][i]]];
-        for (int i = 1; i <= m; ++i)
-            TmpSort[i] += TmpSort[i - 1];
-        for (int i = n; i >= 1; i--)
-            SA[TmpSort[Rank[Cur][Rank[Cur ^ 1][i]]]--] = Rank[Cur ^ 1][i];
-    }
-
-    inline bool equal(int f[], int x, int y, int l) {
-        return f[x] == f[y] && f[x + l] == f[y + l];
-    }
-
-    void DAPreprocess(int n) {
-        int m;
-        for (int i = 1; i <= n; ++i) {
-            Rank[Cur][i] = Data[i];
-            Rank[Cur ^ 1][i] = i;
+            link = len = 0;
         }
-        m = 127;
-        sort(n, m);
-        for (int w = 1, p = 1, i; p < n; w *= 2, m = p) {
-            for (p = 0, i = n - w + 1; i <= n; ++i)
-                Rank[Cur ^ 1][++p] = i;
-            for (i = 1; i <= n; ++i)
-                if (SA[i] > w)
-                    Rank[Cur ^ 1][++p] = SA[i] - w;
-            sort(n, m);
-            Cur ^= 1;
-            Rank[Cur][SA[1]] = p = 1;
-            for (i = 2; i <= n; ++i)
-                Rank[Cur][SA[i]] =
-                    equal(Rank[Cur ^ 1], SA[i], SA[i - 1], w) ? p : ++p;
+
+        int &operator[](int x) {
+            return next[x];
         }
+    };
+
+    SuffixAutomaton() {
+        nodes.push_back(Node());
+        last = 0;
+        nodes[0].link = -1;
     }
 
-    void heightPreprocess(int n) {
-        int j, k = 0;
-        for (int i = 1; i <= n; Height[Rank[Cur][i++]] = k)
-            for (k = k ? k - 1 : k, j = SA[Rank[Cur][i] - 1];
-                 Data[i + k] == Data[j + k]; ++k)
-                ;
+    Node &operator[](int x) {
+        return nodes[x];
+    }
+
+    int size() {
+        return nodes.size() - 1;
+    }
+
+    void insert(char c) {
+        int x = create(), p = last, w = c - 'a';
+        nodes[x].len = nodes[p].len + 1;
+
+        for (; p != -1 && !nodes[p][w]; p = nodes[p].link)
+            nodes[p][w] = x;
+
+        if (p == -1) {
+            nodes[x].link = 0;
+        } else {
+            int q = nodes[p][w];
+
+            if (nodes[q].len == nodes[p].len + 1) {
+                nodes[x].link = q;
+            } else {
+                int nq = create(q);
+                nodes[nq].len = nodes[p].len + 1;
+                nodes[q].link = nodes[x].link = nq;
+
+                for (; p != -1 && nodes[p][w] == q; p = nodes[p].link)
+                    nodes[p][w] = nq;
+            }
+        }
+
+        last = x;
+    }
+
+    void insert(char str[], int len) {
+        for (int i = 1; i <= len; ++i)
+            insert(str[i]);
+    }
+private:
+
+    vector<Node> nodes;
+    int last;
+
+    int create(int id = -1) {
+        nodes.push_back(id == -1 ? Node() : nodes[id]);
+        return nodes.size() - 1;
     }
 };
 
-const int maxn = 600000;
-char str1[maxn], str2[maxn];
-SuffixArray<maxn> sa;
+SuffixAutomaton sam;
+char s[maxn], t[maxn];
+
+int find(char s[], char t[], int ls, int lt) {
+    sam.insert(s, ls);
+
+    int ans = 0, x = 0, l = 0;
+
+    for (int i = 1; i <= lt; ++i) {
+        int w = t[i] - 'a';
+
+        while (x && !sam[x][w]) {
+            x = sam[x].link;
+            l = sam[x].len;
+        }
+
+        if (sam[x][w]) {
+            x = sam[x][w];
+            ++l;
+        }
+
+        ans = max(ans, l);
+    }
+
+    return ans;
+}
 
 int main() {
-    scanf("%s%s", str1 + 1, str2);
-    int len = strlen(str1 + 1);
-    strcat(str1 + 1, "@");
-    strcat(str1 + 1, str2);
-    sa.init(str1);
-    sa.preprocess(true, true);
-    int ans = 0;
-    int n = strlen(str1 + 1);
-    for (int i = 2; i <= n; ++i) {
-        if (sa.atHeight(i) > ans) {
-            int s1 = sa.atSA(i), s2 = sa.atSA(i - 1);
-            if ((1 <= s1 && s1 < len && len < s2) ||
-                (1 <= s2 && s2 < len && len < s1)) {
-                ans = sa.atHeight(i);
-            }
-        }
-    }
-    printf("%d\n", ans);
+    ios::sync_with_stdio(false);
+    cin >> (s + 1) >> (t + 1);
+    cout << find(s, t, strlen(s + 1), strlen(t + 1));
     return 0;
 }

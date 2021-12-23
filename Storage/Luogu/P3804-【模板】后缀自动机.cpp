@@ -1,94 +1,115 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
 
 constexpr int maxn = 2e6 + 10;
 
-int cnt[maxn];
-
 struct SuffixAutomaton {
     struct Node {
-        int next[26], len, link;
+        int next[26], link, len, cloned;
+
+        Node() {
+            for (int i = 0; i < 26; ++i)
+                next[i] = 0;
+
+            link = len = 0;
+            cloned = false;
+        }
 
         int &operator[](int x) {
             return next[x];
         }
     };
 
-    Node tree[maxn];
-    int uuid, last;
-    
-    SuffixAutomaton() : uuid(1), last(1) {
-        memset(tree, 0, sizeof(tree));
+    vector<Node> nodes;
+    int last;
+
+    SuffixAutomaton() {
+        nodes.clear();
+        last = 0;
+        nodes.push_back(Node());
+        nodes[0].link = -1;
     }
 
-    void clear() {
-        uuid = last = 1;
-        memset(tree, 0, sizeof(tree));
+    int create(Node nd = Node()) {
+        nodes.push_back(nd);
+        return nodes.size() - 1;
     }
 
     void insert(char c) {
-        int x = last, nx = last = ++uuid, w = c - 'a';
-        cnt[nx] = 1;
-        tree[nx].len = tree[x].len + 1;
-        for (; x && !tree[x][w]; x = tree[x].link)
-            tree[x][w] = nx;
-        if (x == 0) {
-            tree[nx].link = 1;
+        int x = create(), p = last, w = c - 'a';
+        nodes[x].len = nodes[last].len + 1;
+
+        for (; p != -1 && !nodes[p][w]; p = nodes[p].link)
+            nodes[p][w] = x;
+
+        if (p == -1) {
+            nodes[x].link = 0;
         } else {
-            int y = tree[x][w];
-            if (tree[x].len + 1 == tree[y].len) {
-                tree[nx].link = y;
+            int q = nodes[p][w];
+
+            if (nodes[q].len == nodes[p].len + 1) {
+                nodes[x].link = q;
             } else {
-                int ny = ++uuid;
-                tree[ny] = tree[y];
-                tree[ny].len = tree[x].len + 1;
-                tree[y].link = tree[nx].link = ny;
-                for (; x && tree[x][w] == y; x = tree[x].link)
-                    tree[x][w] = ny;
+                int nq = create(nodes[q]);
+                nodes[nq].len = nodes[p].len + 1;
+                nodes[nq].cloned = true;
+
+                for (; p != -1 && nodes[p][w] == q; p = nodes[p].link)
+                    nodes[p][w] = nq;
+
+                nodes[q].link = nq;
+                nodes[x].link = nq;
             }
         }
+
+        last = x;
+    }
+
+    Node &operator[](int x) {
+        return nodes[x];
+    }
+
+    int size() {
+        return nodes.size() - 1;
     }
 };
 
-struct Edge {
-    int to, next;
-};
-
-int n;
-long long ans;
-char str[maxn];
 SuffixAutomaton sam;
-Edge tree[maxn];
-int uuid, head[maxn];
+vector<int> tree[maxn];
+int cnt[maxn];
+long long ans;
 
 void link(int x, int y) {
-    tree[++uuid] = {y, head[x]};
-    head[x] = uuid;
+    tree[x].push_back(y);
 }
 
-void DFS(int x) {
-    for (int i = head[x], y; y = tree[i].to, i; i = tree[i].next) {
-        DFS(y);
+void dfs(int x) {
+    if (!sam[x].cloned)
+        cnt[x] = 1;
+
+    for (int y : tree[x]) {
+        dfs(y);
         cnt[x] += cnt[y];
     }
+
     if (cnt[x] > 1)
-        ans = max(ans, 1LL * cnt[x] * sam.tree[x].len);
-}
+        ans = max(ans, 1ll * cnt[x] * sam[x].len);
+} 
 
 int main() {
-#ifndef ONLINE_JUDGE
-    freopen("project.in", "r", stdin);
-    freopen("project.out", "w", stdout);
-#endif
     ios::sync_with_stdio(false);
-    cin >> (str + 1);
-    n = strlen(str + 1);
-    for (int i = 1; i <= n; ++i)
-        sam.insert(str[i]);
-    for (int i = 2; i <= sam.uuid; ++i)
-        link(sam.tree[i].link, i);
-    DFS(1);
+    string s;
+    cin >> s;
+
+    for (char c : s)
+        sam.insert(c);
+
+    for (int i = 1; i <= sam.size(); ++i) 
+        link(sam[i].link, i);
+
+    dfs(0);
     cout << ans << endl;
     return 0;
 }
-
