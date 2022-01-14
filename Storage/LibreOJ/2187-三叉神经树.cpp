@@ -1,13 +1,12 @@
 #include <iostream>
 using namespace std;
 
-constexpr int maxn = 1e5 + 10;
-constexpr int mod = 51061;
+constexpr int maxn = 5e5 + 10;
 
 struct Node {
     int ls, rs, fa, size;
     bool rev;
-    int key, sum, add, mul;
+    int key, cnt[4], add;
 
     int &operator[](int x) {
         return (x == 0 ? ls : rs);
@@ -17,10 +16,13 @@ struct Node {
 int n, q;
 Node tree[maxn];
 int st[maxn];
+int mp[maxn * 3], val[maxn * 3];
 
 void pushup(int x) {
-    tree[x].sum = (tree[tree[x].ls].sum + tree[x].key + tree[tree[x].rs].sum) % mod;
     tree[x].size = tree[tree[x].ls].size + 1 + tree[tree[x].rs].size;
+
+    for (int i = 0; i < 4; ++i)
+        tree[x].cnt[i] = tree[tree[x].ls].cnt[i] + (tree[x].key == i) + tree[tree[x].rs].cnt[i];
 }
 
 void updateReverse(int x) {
@@ -29,16 +31,10 @@ void updateReverse(int x) {
 }
 
 void updateAdd(int x, int v) {
-    tree[x].key = (tree[x].key + v) % mod;
-    tree[x].sum = (tree[x].sum + 1ll * tree[x].size * v) % mod;
-    tree[x].add = (tree[x].add + v) % mod;
-}
-
-void updateMultiply(int x, int v) {
-    tree[x].key = 1ll * tree[x].key * v % mod;
-    tree[x].sum = 1ll * tree[x].sum * v % mod;
-    tree[x].add = 1ll * tree[x].add * v % mod;
-    tree[x].mul = 1ll * tree[x].mul * v % mod;
+    tree[x].cnt[tree[x].key + v] += tree[x].cnt[tree[x].key];
+    tree[x].cnt[tree[x].key] = 0;
+    tree[x].key += v;
+    tree[x].add += v;
 }
 
 void pushdown(int x) {
@@ -50,16 +46,6 @@ void pushdown(int x) {
             updateReverse(tree[x].rs);
 
         tree[x].rev = false;
-    }
-
-    if (tree[x].mul != 1) {
-        if (tree[x].ls)
-            updateMultiply(tree[x].ls, tree[x].mul);
-
-        if (tree[x].rs)
-            updateMultiply(tree[x].rs, tree[x].mul);
-
-        tree[x].mul = 1;
     }
 
     if (tree[x].add) {
@@ -74,11 +60,11 @@ void pushdown(int x) {
 }
 
 int which(int x) {
-    return (tree[tree[x].fa].rs == x);
+    return tree[tree[x].fa].rs == x;
 }
 
 bool isRoot(int x) {
-    return (tree[tree[x].fa].ls != x && tree[tree[x].fa].rs != x);
+    return tree[tree[x].fa].ls != x && tree[tree[x].fa].rs != x;
 }
 
 void rotate(int x) {
@@ -109,10 +95,9 @@ void splay(int x) {
     while (top)
         pushdown(st[top--]);
 
-    for (int y; y = tree[x].fa, !isRoot(x); rotate(x)) {
+    for (int y; y = tree[x].fa, !isRoot(x); rotate(x))
         if (!isRoot(y))
             rotate(which(x) == which(y) ? y : x);
-    }
 }
 
 void access(int x) {
@@ -145,67 +130,89 @@ int findRoot(int x) {
 
 void link(int x, int y) {
     makeRoot(x);
-    
+
     if (findRoot(y) != x)
         tree[x].fa = y;
 }
 
-void cut(int x, int y) {
-    makeRoot(x);
+int find(int x, int v) {
+    while (x) {
+        pushdown(x);
 
-    if (findRoot(y) == x && tree[y].fa == x && !tree[y].ls) {
-        tree[y].fa = tree[x].rs = 0;
-        pushup(x);
+        if (tree[tree[x].rs].cnt[v] == tree[tree[x].rs].size && tree[x].key != v)
+            return x;
+        else if (tree[tree[x].rs].cnt[v] < tree[tree[x].rs].size)
+            x = tree[x].rs;
+        else
+            x = tree[x].ls;
     }
+
+    return 0;
 }
 
-int split(int x, int y) {
-    makeRoot(x);
-    access(y);
-    splay(y);
-    return y;
-}
+void modify(int x, int v) {
+    makeRoot(1);
+    access(x);
+    splay(x);
 
-void init(int x) {
-    tree[x].ls = tree[x].rs = tree[x].fa = 0;
-    tree[x].size = 1;
-    tree[x].rev = false;
-    tree[x].key = tree[x].sum = 1;
-    tree[x].add = 0;
-    tree[x].mul = 1;
+    int delta = (v == 1 ? 1 : -1);
+    int y = find(x, (v == 1 ? 1 : 2));
+
+    if (!y) {
+        updateAdd(x, delta);
+    } else {
+        splay(y);
+
+        if (tree[y].rs)
+            updateAdd(tree[y].rs, delta);
+
+        if (0 <= tree[y].key + delta && tree[y].key + delta <= 3)
+            tree[y].key += delta;
+        
+        pushup(y);
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
-    cin >> n >> q;
+    cin >> n;
 
-    for (int i = 1; i <= n; ++i)
-        init(i);
-
-    for (int i = 1; i < n; ++i) {
-        int x, y;
-        cin >> x >> y;
-        link(x, y);
+    for (int i = 1; i <= n; ++i) {
+        tree[i].size = 1;
+        tree[i].cnt[0] = 1;
     }
 
-    while (q--) {
-        char op[5];
-        int x, y, a, b;
-        cin >> op >> x >> y;
+    for (int i = 1; i <= n; ++i) {
+        int x[3];
+        cin >> x[0] >> x[1] >> x[2];
 
-        if (op[0] == '+') {
-            cin >> a;
-            updateAdd(split(x, y), a);
-        } else if (op[0] == '-') {
-            cin >> a >> b;
-            cut(x, y);
-            link(a, b);
-        } else if (op[0] == '*') {
-            cin >> a;
-            updateMultiply(split(x, y), a);
-        } else {
-            cout << tree[split(x, y)].sum << endl;
+        for (int j = 0; j < 3; ++j) {
+            if (x[j] <= n)
+                link(i, x[j]);
+            else
+                mp[x[j]] = i;
         }
+    }
+
+    for (int i = n + 1; i <= 3 * n + 1; ++i) {
+        int v;
+        cin >> v;
+        val[i] = v;
+
+        if (v)
+            modify(mp[i], v);
+    }
+
+    cin >> q;
+
+    for (int i = 1; i <= q; ++i) {
+        int x;
+        cin >> x;
+        val[x] ^= 1;
+        modify(mp[x], val[x]);
+        makeRoot(1);
+        splay(1);
+        cout << (tree[1].key >= 2) << endl;
     }
 
     return 0;

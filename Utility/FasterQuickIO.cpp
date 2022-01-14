@@ -79,13 +79,3 @@ template <typename T = int> void write(T x, char blank[]) {
 }
 
 } // namespace IO
-
-int main() {
-#ifndef ONLINE_JUDGE
-    freopen("project.in", "r", stdin);
-    freopen("project.out", "w", stdout);
-#endif
-    using namespace IO;
-    
-    return 0;
-}
