@@ -3,32 +3,24 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "C:/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/10.3.0/include/c++**"
+                "${workspaceFolder}/**"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "VSCODE_ENVIRONMENT"
             ],
-            "compilerPath": "C:\\TDM-GCC-64\\bin\\g++.exe",
-            "cStandard": "c11",
+            "compilerPath": "D:/Programs/TDM-GCC-64/bin/g++.exe",
+            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64",
             "compilerArgs": [
-                "-std=c++17",
                 "-Wall",
-                "-Wparentheses",
-                "-Wuninitialized",
-                "-Wl",
-                "-stack=53687091200"
-            ],
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/**"
-                ],
-                "limitSymbolsToIncludedHeaders": true
-            }
+                "-std=c++17",
+                "-Wl,--stack=1024000000",
+                "-DVSCODE_ENVIRONMENT"
+            ]
         }
     ],
     "version": 4
