@@ -15,30 +15,10 @@
     "C_Cpp.vcFormat.space.insertAfterSemicolon": true,
     "files.associations": {
         "iostream": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "tuple": "cpp"
     },
-    "powermode.enabled": true,
-    //powser mode
-    //样式
-    // 火焰
-    // "powermode.presets": "flames",
-    // 炸裂
-    // "powermode.presets": "exploding-rift",
-    // 爆炸
-    // "powermode.presets": "simple-rift",
-    // 粒子
-    "powermode.presets": "particles",
-    // 烟花
-    // "powermode.presets": "fireworks",
-    // 魔法
-    // "powermode.presets": "magic",
-    // 回形针
-    // "powermode.presets": "clippy",
-    // 时间间隔
-    "powermode.comboTimeout": 0,
-    // 抖动
-    "powermode.enableShake": false,
-    // "powermode.enableShake": true,
-    // 随字体颜色变化
-    // "powermode.backgroundMode": "mask",
+    "C_Cpp.vcFormat.space.withinControlFlowStatementParentheses": true,
+    "C_Cpp.vcFormat.space.withinCastParentheses": true,
+    "C_Cpp.vcFormat.space.withinExpressionParentheses": true
 }

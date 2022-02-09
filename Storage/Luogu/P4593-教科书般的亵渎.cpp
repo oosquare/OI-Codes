@@ -13,6 +13,7 @@ constexpr int mod = 1e9 + 7;
 int t, m;
 ll n, a[maxm];
 int x[maxm], y[maxm];
+int fac[maxm], inv[maxm], pre[maxm], suf[maxm];
 
 int power(int x, int y) {
     int res = 1;
@@ -27,28 +28,45 @@ int power(int x, int y) {
     return res;
 }
 
+inline int sgnInv(int n) {
+    static int inv[2] = {power(1, mod - 2), power(mod - 1, mod - 2)};
+    return inv[n % 2];
+}
+
+void preprocess() {
+    fac[0] = 1;
+
+    for (int i = 1; i <= maxm - 1; ++i)
+        fac[i] = 1ll * fac[i - 1] * i % mod;
+    
+    inv[maxm - 1] = power(fac[maxm - 1], mod - 2);
+
+    for (int i = maxm - 2; i >= 0; --i)
+        inv[i] = 1ll * inv[i + 1] * (i + 1) % mod;
+}
+
 int lagrange(ll x0, int n) {
     int ans = 0;
 
-    for (int i = 0; i <= n; ++i) {
-        int num = 1, den = 1;
+    pre[0] = suf[n + 2] = 1;
 
-        for (int j = 0; j <= n; ++j) {
-            if (i == j)
-                continue;
+    for (int i = 1; i <= n + 1; ++i)
+        pre[i] = 1ll * pre[i - 1] * (x0 - i + mod) % mod;
+    
+    for (int i = n + 1; i >= 1; --i)
+        suf[i] = 1ll * suf[i + 1] * (x0 - i + mod) % mod;
 
-            num = 1ll * num * (x0 - x[j]) % mod;
-            den = 1ll * den * (x[i] - x[j]) % mod;
-        }
-
-        ans = (1ll * ans + 1ll * y[i] * num % mod * power(den, mod - 2) % mod) % mod;
+    for (int i = 1; i <= n + 1; ++i) {
+        int num = 1ll * y[i] * pre[i - 1] % mod * suf[i + 1] % mod;
+        int den = 1ll * inv[i - 1] * inv[n - i + 1] % mod * sgnInv(n - i + 1) % mod % mod;
+        ans = (1ll * ans + 1ll * num * den % mod) % mod;
     }
 
     return (ans + mod) % mod;
 }
 
 int calc(ll x0) {
-    if (x0 <= m + 2)
+    if (x0 <= m + 3)
         return y[x0];
 
     return lagrange(x0, m + 2);
@@ -57,7 +75,7 @@ int calc(ll x0) {
 int solve() {
     int ans = 0;
 
-    for (int i = 1; i <= m + 2; ++i) {
+    for (int i = 1; i <= m + 3; ++i) {
         x[i] = i;
         y[i] = (y[i - 1] + power(i, m + 1)) % mod;
     }
@@ -82,6 +100,7 @@ int solve() {
 
 int main() {
     ios::sync_with_stdio(false);
+    preprocess();
     cin >> t;
 
     while (t--) {
