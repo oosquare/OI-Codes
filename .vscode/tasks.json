@@ -12,8 +12,7 @@
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "-Wall",
                 "-std=c++17",
-                "-Wl,--stack=1024000000",
-                "-O2"
+                "-Wl,--stack=1024000000"
             ],
             "options": {
                 "cwd": ""

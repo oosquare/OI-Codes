@@ -16,9 +16,28 @@
     "files.associations": {
         "iostream": "cpp",
         "bitset": "cpp",
-        "tuple": "cpp"
-    },
-    "C_Cpp.vcFormat.space.withinControlFlowStatementParentheses": true,
-    "C_Cpp.vcFormat.space.withinCastParentheses": true,
-    "C_Cpp.vcFormat.space.withinExpressionParentheses": true
+        "tuple": "cpp",
+        "cmath": "cpp",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "optional": "cpp",
+        "future": "cpp",
+        "memory": "cpp",
+        "numeric": "cpp",
+        "istream": "cpp",
+        "regex": "cpp",
+        "typeinfo": "cpp",
+        "ranges": "cpp",
+        "complex": "cpp",
+        "random": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "limits": "cpp",
+        "numbers": "cpp",
+        "stdexcept": "cpp",
+        "streambuf": "cpp",
+        "system_error": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp"
+    }
 }
