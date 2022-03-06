@@ -15,7 +15,7 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-    "Redirect stdin & stdout to a file": {
+    "Redirect stdin & stdout to *.in & *.out": {
         "scope": "cpp",
         "prefix": "reopen",
         "body": [

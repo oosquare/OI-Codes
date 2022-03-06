@@ -8,8 +8,7 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE",
-                "VSCODE_ENVIRONMENT"
+                "_UNICODE"
             ],
             "compilerPath": "D:/Programs/TDM-GCC-64/bin/g++.exe",
             "cStandard": "c17",
@@ -17,9 +16,13 @@
             "intelliSenseMode": "windows-gcc-x64",
             "compilerArgs": [
                 "-Wall",
+                "-Wextra",
+                "-Wparentheses",
+                "-Wsequence-point",
+                "-Woverflow",
+                "-Wconversion",
                 "-std=c++17",
-                "-Wl,--stack=1024000000",
-                "-DVSCODE_ENVIRONMENT"
+                "-Wl,--stack=1024000000"
             ]
         }
     ],

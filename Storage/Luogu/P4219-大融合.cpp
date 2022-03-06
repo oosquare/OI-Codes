@@ -111,6 +111,7 @@ void link(int x, int y) {
     makeRoot(x);
 
     if (findRoot(y) != x) {
+        makeRoot(y);
         tree[x].fa = y;
         tree[y].vsize += tree[x].size;
         tree[y].size += tree[x].size;

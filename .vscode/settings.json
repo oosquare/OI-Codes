@@ -38,6 +38,10 @@
         "streambuf": "cpp",
         "system_error": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
+    },
+    "winopacity.opacity": 220
 }

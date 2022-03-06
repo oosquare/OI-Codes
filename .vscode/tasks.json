@@ -11,6 +11,8 @@
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "-Wall",
+                "-Wextra",
+                "-Wconversion",
                 "-std=c++17",
                 "-Wl,--stack=1024000000"
             ],
