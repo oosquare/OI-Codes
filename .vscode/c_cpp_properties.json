@@ -1,6 +1,26 @@
 {
     "configurations": [
         {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "compilerPath": "/usr/bin/clang++",
+            "compilerArgs": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-Wconversion",
+                "-Wparentheses",
+                "-Wsequence-point",
+                "-Woverflow"
+            ],
+            "intelliSenseMode": "linux-clang-x64"
+        },
+        {
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**"
