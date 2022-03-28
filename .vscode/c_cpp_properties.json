@@ -13,7 +13,6 @@
                 "-std=c++17",
                 "-Wall",
                 "-Wextra",
-                "-Wconversion",
                 "-Wparentheses",
                 "-Wsequence-point",
                 "-Woverflow"

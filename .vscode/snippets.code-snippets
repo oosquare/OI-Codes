@@ -19,8 +19,8 @@
         "scope": "cpp",
         "prefix": "reopen",
         "body": [
-            "freopen(\"$1.in\", \"r\", stdin);",
-            "freopen(\"$1.out\", \"w\", stdout);"
+            "std::freopen(\"$1.in\", \"r\", stdin);",
+            "std::freopen(\"$1.out\", \"w\", stdout);"
         ]
     }
 }
