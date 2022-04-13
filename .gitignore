@@ -28,9 +28,13 @@
 
 # Executables
 *.exe
-# *.out
-a.out
+*.out
 *.app
+
+# For the output buffer especially
+!project.out
 
 Temporary
 Contest
+
+tmp.*

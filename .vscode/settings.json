@@ -105,5 +105,12 @@
     },
     "winopacity.opacity": 220,
     "C_Cpp.vcFormat.indent.lambdaBracesWhenParameter": false,
-    "C_Cpp.vcFormat.newLine.beforeCatch": false
+    "C_Cpp.vcFormat.newLine.beforeCatch": false,
+    "editor.scrollbar.scrollByPage": true,
+    "editor.cursorSurroundingLines": 5,
+    "code-runner.runInTerminal": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.executorMap": {
+        "cpp": "cd $dir && clang++ -g -std=c++14 -fdiagnostics-color=always -Wall -Wextra -Wconversion -Wparentheses -Wsequence-point -Woverflow $fileName -o $fileNameWithoutExt.app && $dir$fileNameWithoutExt.app",
+    },
 }
