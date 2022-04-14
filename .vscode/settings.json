@@ -111,6 +111,6 @@
     "code-runner.runInTerminal": true,
     "code-runner.saveFileBeforeRun": true,
     "code-runner.executorMap": {
-        "cpp": "cd $dir && clang++ -g -std=c++14 -fdiagnostics-color=always -Wall -Wextra -Wconversion -Wparentheses -Wsequence-point -Woverflow $fileName -o $fileNameWithoutExt.app && $dir$fileNameWithoutExt.app",
+        "cpp": "cd $dir && clang++ -g -std=c++17 -fdiagnostics-color=always -Wall -Wextra -Wconversion -Wparentheses -Wsequence-point -Woverflow $fileName -o $fileNameWithoutExt.app && $dir$fileNameWithoutExt.app",
     },
 }
