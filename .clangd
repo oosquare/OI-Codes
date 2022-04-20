@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-std=c++17, -Wall, -Wextra, -Wconversion, -Wparentheses, -Wsequence-point, -Woverflow]
+  Add: [-std=c++17, -Wall, -Wextra, -Wconversion, -Wparentheses, -Wsequence-point, -Woverflow, -Wno-sign-conversion, -Wno-sign-compare]
