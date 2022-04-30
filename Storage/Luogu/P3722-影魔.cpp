@@ -106,13 +106,6 @@ std::vector<Query> qs[MAX_N];
 long long ans[MAX_N * 2];
 
 int main() {
-#ifdef ONLINE_JUDGE
-    std::freopen("c.in", "r", stdin);
-    std::freopen("c.out", "w", stdout);
-#else
-    std::freopen("project.in", "r", stdin);
-    std::freopen("project.out", "w", stdout);
-#endif
     std::ios::sync_with_stdio(false);
 
     std::cin >> n >> m >> p1 >> p2;

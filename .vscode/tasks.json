@@ -29,7 +29,7 @@
         {
             "type": "cppbuild",
             "label": "C++ - G++ Build on Windows",
-            "command": "D:/Programs/TDM-GCC-64/bin/g++.exe",
+            "command": "C:/Program Files/TDM-GCC-64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",

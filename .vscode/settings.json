@@ -101,7 +101,11 @@
         "span": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "cerrno": "cpp",
+        "climits": "cpp",
+        "ios": "cpp",
+        "queue": "cpp"
     },
     "winopacity.opacity": 220,
     "C_Cpp.vcFormat.indent.lambdaBracesWhenParameter": false,

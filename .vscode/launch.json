@@ -41,7 +41,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\Programs\\TDM-GCC-64\\bin\\gdb.exe",
+            "miDebuggerPath": "C:\\Program Files\\TDM-GCC-64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable Pretty Printing when Debugging",

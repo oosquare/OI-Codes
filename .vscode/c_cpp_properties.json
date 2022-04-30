@@ -29,7 +29,7 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "D:/Programs/TDM-GCC-64/bin/g++.exe",
+            "compilerPath": "C:/Program Files/TDM-GCC-64/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64",
